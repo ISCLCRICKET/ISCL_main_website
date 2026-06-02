@@ -27,11 +27,13 @@ const Footer = () => {
           <div className="space-y-4">
             <div className="flex items-center gap-3">
               <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-[#E91E8C] via-[#8B5CF6] to-[#2563EB] rounded-lg blur-md opacity-50"></div>
-                <div className="relative bg-[#0A0A0A] px-3 py-2 rounded-lg border border-white/10">
-                  <span className="text-2xl font-bold bg-gradient-to-r from-[#E91E8C] via-[#8B5CF6] to-[#2563EB] bg-clip-text text-transparent" style={{ fontFamily: 'Rajdhani, sans-serif' }}>
-                    ISCL
-                  </span>
+                <div className="absolute inset-0 rounded-lg blur-md opacity-50"></div>
+                <div className="flex items-center gap-3">
+                  <img
+                    src="/images/logo.png"
+                    alt="ISCL"
+                    className="h-20 w-auto"
+                  />
                 </div>
               </div>
             </div>

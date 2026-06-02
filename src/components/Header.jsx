@@ -24,16 +24,19 @@ const Header = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 group">
+         <Link to="/" className="flex items-center gap-3 group">
+          <div className="relative">
+            <div className="absolute inset-0 bg-gradient-to-r from-[#E91E8C] via-[#8B5CF6] to-[#2563EB] rounded-lg blur-lg opacity-0 group-hover:opacity-50 transition-opacity duration-300 "></div>
+
             <div className="relative">
-              <div className="absolute inset-0 bg-gradient-to-r from-[#E91E8C] via-[#8B5CF6] to-[#2563EB] rounded-lg blur-md opacity-75 group-hover:opacity-100 transition-opacity duration-300 animate-pulse"></div>
-              <div className="relative bg-[#0A0A0A] px-3 py-2 rounded-lg border border-white/10">
-                <span className="text-2xl font-bold bg-gradient-to-r from-[#E91E8C] via-[#8B5CF6] to-[#2563EB] bg-clip-text text-transparent" style={{ fontFamily: 'Rajdhani, sans-serif' }}>
-                  ISCL
-                </span>
-              </div>
+              <img
+                src="/images/logo.png"
+                alt="ISCL"
+                className="h-12 w-auto sm:h-14 md:h-16"
+              />
             </div>
-          </Link>
+          </div>
+        </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">

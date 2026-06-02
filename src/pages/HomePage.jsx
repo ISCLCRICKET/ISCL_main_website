@@ -20,8 +20,18 @@ const HomePage = () => {
   const topTeams = pointsTable.slice(0, 4);
   return <>
       <Helmet>
-        <title>ISCL - India's biggest softball cricket league</title>
-        <meta name="description" content="Experience the fastest, fiercest, and most fearless street cricket action. Watch live matches, follow your favorite teams, and witness cricket like never before." />
+        <title>ISCL - India's Biggest Softball Cricket League</title>
+
+        <link
+          rel="icon"
+          type="image/png"
+          href="/images/logo.png?v=1"
+        />
+
+        <meta
+          name="description"
+          content="Experience the fastest, fiercest, and most fearless street cricket action. Watch live matches, follow your favorite teams, and witness cricket like never before."
+        />
       </Helmet>
 
       <MarqueeScoreTicker />
@@ -44,14 +54,14 @@ const HomePage = () => {
             duration: 0.5
           }} className="inline-block">
               <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-[#E91E8C] via-[#8B5CF6] to-[#2563EB] rounded-2xl blur-2xl opacity-50 animate-pulse"></div>
-                <div className="relative bg-[#0A0A0A] px-8 py-4 rounded-2xl border border-white/20">
-                  <span className="text-6xl md:text-7xl font-bold bg-gradient-to-r from-[#E91E8C] via-[#8B5CF6] to-[#2563EB] bg-clip-text text-transparent" style={{
-                  fontFamily: 'Rajdhani, sans-serif'
-                }}>
-                    ISCL
-                  </span>
-                </div>
+                <div className="absolute inset-0 bg-gradient-to-r from-[#E91E8C] via-[#8B5CF6] to-[#2563EB] rounded-2xl blur-2xl opacity-0 "></div>
+                  <div className="relative">
+                    <img
+                      src="/images/logo.png"
+                      alt="ISCL"
+                      className="h-20 w-auto sm:h-28 md:h-36 lg:h-44"
+                    />
+                  </div>
               </div>
             </motion.div>
 
@@ -65,7 +75,7 @@ const HomePage = () => {
           }} transition={{
             duration: 0.5,
             delay: 0.2
-          }} className="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight" style={{
+          }}className="text-5xl md:text-6xl lg:text-7xl font-bold leading-tight bg-gradient-to-r from-white via-white to-[#60A5FA] bg-clip-text text-transparent" style={{
             fontFamily: 'Rajdhani, sans-serif',
             letterSpacing: '-0.02em',
             textBalance: 'balance'
