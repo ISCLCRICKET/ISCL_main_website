@@ -8,7 +8,7 @@ export const teams = [
     color: '#2563EB',
     captain: 'Arjun Sharma',
     squad: [
-      { id: 1, name: 'Arjun Sharma', role: 'All-Rounder', jersey: 7, photo: 'https://images.unsplash.com/photo-1633498020526-0403169e822d' },
+      { id: 1, name: 'Arjun Sharma', role: 'All-Rounder', jersey: 7, photo: 'https://www.google.com/imgres?q=softball%20circketer%20picture&imgurl=https%3A%2F%2Fimages.pexels.com%2Fphotos%2F35903110%2Fpexels-photo-35903110%2Ffree-photo-of-cricket-player-performing-a-dynamic-batting-shot.jpeg%3Fauto%3Dcompress%26cs%3Dtinysrgb%26dpr%3D1%26w%3D500&imgrefurl=https%3A%2F%2Fwww.pexels.com%2Fsearch%2Fcricket%2520softball%2F&docid=1D7HEisWdS1MFM&tbnid=TyJguNjKYkaUFM&vet=12ahUKEwjd_Y6_sOiUAxUdTWwGHVDGM4QQnPAOegQIHhAB..i&w=500&h=333&hcb=2&ved=2ahUKEwjd_Y6_sOiUAxUdTWwGHVDGM4QQnPAOegQIHhAB' },
       { id: 2, name: 'Vikram Patel', role: 'Batsman', jersey: 18, photo: 'https://images.unsplash.com/photo-1699518309860-b55162d3feb6' },
       { id: 3, name: 'Rohan Mehta', role: 'Bowler', jersey: 23, photo: 'https://images.unsplash.com/photo-1633498020526-0403169e822d' },
       { id: 4, name: 'Karan Singh', role: 'Wicket-Keeper', jersey: 1, photo: 'https://images.unsplash.com/photo-1699518309860-b55162d3feb6' },
@@ -202,7 +202,7 @@ export const players = [
     name: 'Arjun Sharma',
     team: teams[0],
     role: 'All-Rounder',
-    photo: 'https://images.unsplash.com/photo-1633498020526-0403169e822d',
+    photo: 'https://images.pexels.com/photos/17628651/pexels-photo-17628651/free-photo-of-man-playing-cricket.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
     stats: {
       matches: 12,
       runs: 487,

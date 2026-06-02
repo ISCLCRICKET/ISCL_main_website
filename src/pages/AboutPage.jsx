@@ -8,13 +8,33 @@ import MarqueeScoreTicker from '@/components/MarqueeScoreTicker.jsx';
 import StatsBar from '@/components/StatsBar.jsx';
 
 const AboutPage = () => {
-  const milestones = [
-    { year: '2020', event: 'ISCL founded with vision to bring street cricket to the mainstream' },
-    { year: '2021', event: 'First season launched with 4 teams across Mumbai and Delhi' },
-    { year: '2023', event: 'Expanded to 8 teams covering major Indian cities' },
-    { year: '2024', event: 'Reached 1 million live viewers milestone' },
-    { year: '2026', event: 'Current season with record-breaking viewership and engagement' }
-  ];
+ const milestones = [
+  {
+    year: '2025',
+    title: 'League Launch',
+    event: 'The Indian Softball Cricket League was launched with a vision to provide a professional national platform for softball cricket talent across India.'
+  },
+  {
+    year: '2025',
+    title: 'Historic First Season',
+    event: 'Season 01 featured 32 inter-state franchise teams and more than 500 players competing in India\'s largest softball cricket championship.'
+  },
+  {
+    year: '2025',
+    title: 'National Broadcast',
+    event: 'ISCL achieved nationwide visibility through live telecasts on DD Sports, bringing softball cricket to audiences across the country.'
+  },
+  {
+    year: '2025',
+    title: 'First Champions Crowned',
+    event: 'Punjab Golden Fighters became the inaugural ISCL Champions after defeating Uttar Pradesh Blue in the Season 01 Final on December 21, 2025.' 
+  },
+  {
+    year: '2026',
+    title: 'Season 02 Expansion',
+    event: 'Following the success of Season 01, ISCL announced Season 02 with an enhanced inter-state championship format and greater opportunities for emerging players.'
+  }
+];
 
   return (
     <>
@@ -40,7 +60,7 @@ const AboutPage = () => {
                 Born on the streets of India
               </h1>
               <p className="text-xl text-white/80 max-w-3xl mx-auto leading-relaxed">
-                ISCL is more than a cricket league. It's a celebration of the raw talent, fierce competition, and unbreakable spirit that defines street cricket across India.
+                The Indian Softball Cricket League (ISCL) is India's first-ever national platform dedicated to revolutionizing softball cricket across the country. Founded under the visionary leadership of Dr. Gangadhar Raju, ISCL is more than a league—it's a movement that creates opportunities for talented players, promotes grassroots participation, and works towards making softball cricket a globally recognized sport.
               </p>
             </motion.div>
           </div>
@@ -63,7 +83,7 @@ const AboutPage = () => {
                 We believe every gully has a champion
               </h2>
               <p className="text-lg text-white/60 leading-relaxed">
-                From narrow lanes to packed stadiums, we're bringing the authentic street cricket experience to millions. Our mission is to discover, celebrate, and elevate the incredible talent that exists in every corner of India.
+                 ISCL is dedicated to discovering and nurturing cricket talent from every corner of India. By providing a professional platform, structured competitions, and nationwide visibility, we aim to elevate softball cricket and inspire the next generation of players.
               </p>
             </motion.div>
           </div>
@@ -92,15 +112,24 @@ const AboutPage = () => {
                     className="flex gap-6 items-start"
                   >
                     <div className="flex-shrink-0">
-                      <div className="w-20 h-20 rounded-xl bg-gradient-to-br from-[#2563EB]/20 to-[#E91E8C]/20 border border-white/10 flex items-center justify-center">
-                        <span className="text-2xl font-bold text-white" style={{ fontFamily: 'Oswald, sans-serif' }}>
+                      <div className="w-24 h-24 rounded-xl bg-gradient-to-br from-[#2563EB]/20 to-[#E91E8C]/20 border border-white/10 flex items-center justify-center">
+                        <span className="text-3xl font-bold text-white" style={{ fontFamily: 'Oswald, sans-serif' }}>
                           {milestone.year}
                         </span>
                       </div>
                     </div>
-                    <div className="flex-1 pt-4">
-                      <p className="text-white/80 leading-relaxed">{milestone.event}</p>
-                    </div>
+                    <div className="flex-1 pt-2">
+  <h3
+    className="text-xl font-bold text-white mb-2"
+    style={{ fontFamily: 'Rajdhani, sans-serif' }}
+  >
+    {milestone.title}
+  </h3>
+
+  <p className="text-white/70 leading-relaxed">
+    {milestone.event}
+  </p>
+</div>
                   </motion.div>
                 ))}
               </div>
@@ -121,10 +150,10 @@ const AboutPage = () => {
                 Impact by numbers
               </h2>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                <StatsBar icon={MapPin} value={8} label="Cities covered" color="#2563EB" />
-                <StatsBar icon={Users} value={8} label="Teams" color="#E91E8C" />
-                <StatsBar icon={Trophy} value={48} label="Matches played" color="#FF6B1A" />
-                <StatsBar icon={Calendar} value={3} label="Seasons completed" color="#AACC00" />
+                <StatsBar icon={MapPin} value={32} label="States Represented" color="#2563EB" />
+<StatsBar icon={Users} value={500} label="Players" color="#E91E8C" />
+<StatsBar icon={Trophy} value={32} label="Franchise Teams" color="#FF6B1A" />
+<StatsBar icon={Calendar} value={2} label="Seasons" color="#AACC00" />
               </div>
             </motion.div>
           </div>
