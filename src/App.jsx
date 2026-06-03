@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Route, Routes, BrowserRouter as Router } from 'react-router-dom';
 import ScrollToTop from './components/ScrollToTop.jsx';
 import HomePage from './pages/HomePage.jsx';
@@ -9,11 +9,32 @@ import PlayersPage from './pages/PlayersPage.jsx';
 import NewsPage from './pages/NewsPage.jsx';
 import AboutPage from './pages/AboutPage.jsx';
 import PlayerProfilePage from './pages/PlayerProfilePage.jsx';
+import RegistrationModal from './components/RegistrationModal.jsx'; // Corrected relative path format
 
 function App() {
+    const [isRegisterOpen, setIsRegisterOpen] = useState(false);
+
+    // This listener allows any sub-component or page (like HomePage or Navbar)
+    // to open the registration modal using: window.dispatchEvent(new Event('open-registration'));
+    useEffect(() => {
+        const handleOpenModal = () => setIsRegisterOpen(true);
+        window.addEventListener('open-registration', handleOpenModal);
+        
+        return () => {
+            window.removeEventListener('open-registration', handleOpenModal);
+        };
+    }, []);
+
     return (
         <Router>
             <ScrollToTop />
+            
+            {/* Global Registration Modal available across all pages */}
+            <RegistrationModal 
+                isOpen={isRegisterOpen} 
+                onClose={() => setIsRegisterOpen(false)} 
+            />
+
             <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/teams" element={<TeamsPage />} />
