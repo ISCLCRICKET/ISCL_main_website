@@ -312,39 +312,39 @@ export const players = [
 export const news = [
   {
     id: 1,
-    title: 'Mumbai Mavericks clinch thriller against Delhi Dynamos in last-ball finish',
-    image: 'https://images.unsplash.com/photo-1576868986107-b5f3e2e89fff',
-    tag: 'Match Report',
-    date: '2026-05-26',
-    excerpt: 'Arjun Sharma\'s unbeaten 67 off 34 balls powered Mumbai to a thrilling 2-wicket victory with just one ball remaining.',
-    content: 'In a nail-biting encounter at the Wankhede Stadium, Mumbai Mavericks chased down Delhi Dynamos\' total of 189/5 with just one ball to spare...'
+    title: "ISCL Hosts Grand Official Jersey Launch & Team Owners Introduction Ceremony as Season 03 Registrations Open",
+    tag: "Press Release",
+    excerpt: "The road to the championship builds momentum as the league unveils its vibrant new team jerseys and introduces the visionaries backing the franchises. Registration portals are now officially open for street cricket squads nationwide.",
+    date: "2026-06-03",
+    image: "/images/gully_cricket.png",
+    url: "https://www.aninews.in/news/sports/cricket/iscl-hosts-grand-official-jersey-launch-amp-team-owners-introduction-ceremony20251125170259/"
   },
   {
     id: 2,
-    title: 'Vikram Patel smashes maiden ISCL century, breaks multiple records',
-    image: 'https://images.unsplash.com/photo-1531415074968-036ba1b575da',
-    tag: 'Highlight',
-    date: '2026-05-25',
-    excerpt: 'The Mumbai opener\'s blistering 102 off 58 balls included 8 sixes and 7 fours, setting a new record for fastest century in ISCL history.',
-    content: 'Vikram Patel announced his arrival on the big stage with a sensational maiden century that left the Chennai Challengers bowlers shell-shocked...'
+    title: "Inaugural ISCL Season Concludes as a Historic Milestone for Indian Softball Cricket; Punjab Crowned Champions",
+    tag: "Match Report",
+    excerpt: "Punjab lifts the trophy after a dramatic win under the stadium floodlights, sealing a legendary campaign that has officially transformed the landscape of grassroots softball cricket across the country.",
+    date: "2026-05-20",
+    image: "/images/cricket_stadium_night.png",
+    url: "https://www.htsyndication.com/brand-stories/article/iscl-season-1-concludes-as-a-historic-milestone-for-indian-softball-cricket%3B-punjab-crowned-champions-in-a-thrilling-finale/96186547" // <-- Connected HT Syndication Finale link!
   },
   {
     id: 3,
-    title: 'ISCL announces expansion to 12 teams for 2027 season',
-    image: 'https://images.unsplash.com/photo-1540747913346-19e32dc3e97e',
-    tag: 'Press Release',
-    date: '2026-05-24',
-    excerpt: 'Four new franchises from Ahmedabad, Lucknow, Chandigarh, and Kochi will join the league next year.',
-    content: 'The India Street Cricket League today announced a major expansion, adding four new teams for the 2027 season...'
+    title: "Suresh Raina Champions Grassroots Talent as Official Ambassador of the ISCL",
+    tag: "Interview",
+    excerpt: "Former Indian cricket star and revered 'Mr. IPL' aligns with Founder & President Dr. Gangadhar Raju to provide an incredible national platform showcasing raw talent across the country.",
+    date: "2026-06-01",
+    image: "/images/suresh_raina.png",
+    url: "https://www.aninews.in/news/business/suresh-raina-champions-grassroots-talent-as-ambassador-of-the-indian-softball-cricket-league-iscl20250710135648/"
   },
   {
     id: 4,
-    title: 'Rohan Mehta takes 5-wicket haul, becomes youngest to achieve feat in ISCL',
-    image: 'https://images.unsplash.com/photo-1593766787879-e8c78e09cec8',
-    tag: 'Interview',
-    date: '2026-05-23',
-    excerpt: 'At just 19 years old, the Mumbai pacer\'s 5/24 against Bangalore Blasters etched his name in the record books.',
-    content: 'Young sensation Rohan Mehta spoke exclusively about his historic performance and what it means for his career...'
+    title: "Harbhajan Singh Joins Elite Panel to Mentor Gully Cricketers",
+    tag: "Interview",
+    excerpt: "The legendary spinner breaks down what it takes to leap from street pitches to grand stadiums, offering custom masterclasses for qualifying bowlers.",
+    date: "2026-06-02",
+    image: "/images/harbhajan.png",
+    url: "#"
   }
 ];
 
@@ -375,3 +375,4 @@ export const purpleCap = {
   player: players[2],
   wickets: 18
 };
+
