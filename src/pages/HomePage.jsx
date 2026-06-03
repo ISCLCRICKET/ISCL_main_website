@@ -110,8 +110,11 @@ const HomePage = () => {
             duration: 0.5,
             delay: 0.4
           }} className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="px-8 py-4 rounded-full bg-gradient-to-r from-[#2563EB] to-[#8B5CF6] text-white font-bold text-lg hover:brightness-110 transition-all duration-200 active:scale-[0.98] shadow-lg shadow-[#2563EB]/50">
-                Buy tickets
+              <button 
+                onClick={() => window.dispatchEvent(new Event('open-registration'))}
+                className="px-8 py-4 rounded-full bg-gradient-to-r from-[#2563EB] to-[#8B5CF6] text-white font-bold text-lg hover:brightness-110 transition-all duration-200 active:scale-[0.98] shadow-lg shadow-[#2563EB]/50"
+              >
+                Register now
               </button>
               <button className="px-8 py-4 rounded-full bg-gradient-to-r from-[#E91E8C] to-[#FF6B1A] text-white font-bold text-lg hover:brightness-110 transition-all duration-200 active:scale-[0.98] shadow-lg shadow-[#E91E8C]/50">
                 Watch live

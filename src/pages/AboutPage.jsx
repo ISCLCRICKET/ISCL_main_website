@@ -33,7 +33,12 @@ const AboutPage = () => {
     year: '2026',
     title: 'Season 02 Expansion',
     event: 'Following the success of Season 01, ISCL announced Season 02 with an enhanced inter-state championship format and greater opportunities for emerging players.'
-  }
+  },
+  {
+  year: '2026',
+  title: 'Sony Sports Network Partnership',
+  event: 'ISCL partnered with Sony Sports Network to expand national coverage, strengthen media outreach, and elevate the visibility of softball cricket across India.'
+}
 ];
 
   return (
@@ -48,24 +53,73 @@ const AboutPage = () => {
 
       <main className="min-h-screen bg-[#0A0A0A]">
         {/* Hero */}
-        <section className="py-20 bg-gradient-to-b from-[#0A0A0A] to-[#141414]">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="text-center mb-16"
-            >
-              <h1 className="text-5xl md:text-6xl font-bold text-white mb-6" style={{ fontFamily: 'Rajdhani, sans-serif', letterSpacing: '-0.02em', textBalance: 'balance' }}>
-                Born on the streets of India
-              </h1>
-              <p className="text-xl text-white/80 max-w-3xl mx-auto leading-relaxed">
-                The Indian Softball Cricket League (ISCL) is India's first-ever national platform dedicated to revolutionizing softball cricket across the country. Founded under the visionary leadership of Dr. Gangadhar Raju, ISCL is more than a league—it's a movement that creates opportunities for talented players, promotes grassroots participation, and works towards making softball cricket a globally recognized sport.
-              </p>
-            </motion.div>
-          </div>
-        </section>
+<section className="py-20 bg-gradient-to-b from-[#0A0A0A] to-[#141414]">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="grid md:grid-cols-2 gap-12 items-center">
 
+      {/* Left Side - Content */}
+      <motion.div
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <h1
+          className="text-5xl md:text-6xl font-bold text-white mb-6"
+          style={{
+            fontFamily: 'Rajdhani, sans-serif',
+            letterSpacing: '-0.02em'
+          }}
+        >
+          Born on the Streets of India
+        </h1>
+
+        <p className="text-xl text-white/80 leading-relaxed">
+          The Indian Softball Cricket League (ISCL) is India's first-ever
+          national platform dedicated to revolutionizing softball cricket
+          across the country. Founded under the visionary leadership of
+          Dr. Gangadhar Raju, ISCL is more than a league—it's a movement
+          that creates opportunities for talented players, promotes
+          grassroots participation, and works towards making softball
+          cricket a globally recognized sport.
+        </p>
+
+        <div className="mt-8 border-l-4 border-[#E91E8C] pl-6">
+          <h3
+            className="text-3xl font-bold text-white"
+            style={{ fontFamily: 'Rajdhani, sans-serif' }}
+          >
+            Dr. Gangadhar Raju
+          </h3>
+
+          <p className="text-[#E91E8C] font-medium mt-1">
+            Founder & President, ISCL
+          </p>
+
+          <p className="text-white/60 mt-4 leading-relaxed">
+            Visionary leader dedicated to creating opportunities for
+            softball cricket players across India and transforming
+            grassroots talent into national sporting excellence.
+          </p>
+        </div>
+      </motion.div>
+
+      {/* Right Side - Founder Image */}
+      <motion.div
+        initial={{ opacity: 0, x: 20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.5 }}
+        className="flex justify-center"
+      >
+        <img
+          src="/images/founder.jpg"
+          alt="Dr. Gangadhar Raju"
+          className="w-full max-w-md h-[500px] object-cover rounded-3xl shadow-2xl border border-white/10"
+        />
+      </motion.div>
+
+    </div>
+  </div>
+</section>
         {/* Mission Statement */}
         <section className="py-20 bg-[#141414]">
           <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
