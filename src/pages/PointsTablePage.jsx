@@ -14,11 +14,14 @@ const PointsTablePage = () => {
       label: 'Pos',
       sortable: true,
       render: (row) => (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center justify-center gap-2 font-mono font-bold text-sm">
+          <span>{row.position}</span>
+          {/* Replicated the Q badge for the top 4 teams */}
           {row.position <= 4 && (
-            <div className="w-1 h-8 rounded-full bg-gradient-to-b from-[#AACC00] to-[#AACC00]/50"></div>
+            <span className="w-3.5 h-3.5 rounded-sm bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-[8px] font-black text-emerald-400">
+              Q
+            </span>
           )}
-          <span className="font-bold">{row.position}</span>
         </div>
       )
     },
@@ -28,8 +31,14 @@ const PointsTablePage = () => {
       sortable: false,
       render: (row) => (
         <div className="flex items-center gap-3">
-          <span className="text-2xl">{row.team.logo}</span>
-          <span className="font-semibold">{row.team.name}</span>
+          <div className="w-8 h-8 rounded-full bg-white/5 p-1 flex items-center justify-center">
+            {row.team.logo && row.team.logo.startsWith('/') ? (
+              <img src={row.team.logo} alt="" className="max-w-full max-h-full object-contain" onError={(e) => e.target.style.display='none'} />
+            ) : (
+              <span className="text-xl">{row.team.logo || '🏏'}</span>
+            )}
+          </div>
+          <span className="font-bold text-white/90">{row.team.name}</span>
         </div>
       )
     },
@@ -38,26 +47,47 @@ const PointsTablePage = () => {
     { key: 'lost', label: 'L', sortable: true },
     { key: 'nr', label: 'NR', sortable: true },
     { 
+      key: 'nrr', 
+      label: 'NRR', 
+      sortable: true,
+      render: (row) => (
+        <span className={`font-bold font-mono ${parseFloat(row.nrr) >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
+          {row.nrr}
+        </span>
+      )
+    },
+    {
+      key: 'forRuns',
+      label: 'For',
+      sortable: true,
+      render: (row) => <span className="text-xs font-mono text-white/50">{row.forRuns || '0/0'}</span>
+    },
+    {
+      key: 'againstRuns',
+      label: 'Against',
+      sortable: true,
+      render: (row) => <span className="text-xs font-mono text-white/50">{row.againstRuns || '0/0'}</span>
+    },
+    { 
       key: 'points', 
       label: 'Pts', 
       sortable: true,
-      render: (row) => <span className="font-bold">{row.points}</span>
+      render: (row) => <span className="font-black text-base text-white">{row.points}</span>
     },
-    { key: 'nrr', label: 'NRR', sortable: true },
     {
       key: 'lastFive',
-      label: 'Last 5',
+      label: 'Recent Form',
       sortable: false,
       render: (row) => (
-        <div className="flex gap-1">
-          {row.lastFive.map((result, i) => (
+        <div className="flex gap-1.5 justify-center">
+          {(row.lastFive || []).map((result, i) => (
             <div
               key={i}
-              className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold ${
+              className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold border ${
                 result === 'W' 
-                  ? 'bg-[#AACC00]/20 text-[#AACC00] border border-[#AACC00]/30' 
+                  ? 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400' 
                   : result === 'L'
-                  ? 'bg-[#E91E8C]/20 text-[#E91E8C] border border-[#E91E8C]/30'
+                  ? 'bg-rose-500/10 border-rose-500/30 text-rose-400'
                   : 'bg-white/10 text-white/60 border border-white/20'
               }`}
             >
@@ -79,42 +109,40 @@ const PointsTablePage = () => {
       <MarqueeScoreTicker />
       <Header />
 
-      <main className="min-h-screen bg-[#0A0A0A] py-20">
+      {/* Fixed top padding (pt-32) to prevent absolute header layout overlap */}
+      <main className="min-h-screen bg-[#060606] text-white pt-32 pb-20 relative overflow-hidden">
+        <div className="absolute top-1/4 right-[-10%] w-[400px] h-[400px] bg-blue-600/5 rounded-full blur-[120px] pointer-events-none" />
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Hero */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-center mb-12"
-          >
-            <h1 className="text-5xl md:text-6xl font-bold text-white mb-4" style={{ fontFamily: 'Rajdhani, sans-serif', letterSpacing: '-0.02em', textBalance: 'balance' }}>
+          
+          {/* Header Layout Section */}
+          <div className="border-b border-white/[0.08] pb-6 mb-8">
+            <h1 className="text-4xl font-extrabold uppercase tracking-tight text-white" style={{ fontFamily: 'Rajdhani, sans-serif' }}>
               Points table
             </h1>
-            <p className="text-xl text-white/60 max-w-2xl mx-auto">
-              Track team standings and playoff qualificationgit remote -v
-            </p>
-          </motion.div>
+            <p className="text-sm text-white/40 font-medium tracking-wide mt-1 uppercase">Season 2026 Standings</p>
+          </div>
 
-          {/* Playoff Zone Legend */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
-            className="flex items-center justify-center gap-2 mb-8"
-          >
-            <div className="w-3 h-3 rounded-full bg-gradient-to-b from-[#AACC00] to-[#AACC00]/50"></div>
-            <span className="text-sm text-white/60">Playoff zone (Top 4)</span>
-          </motion.div>
+          {/* Tab Menu Options */}
+          <div className="flex gap-3 mb-8">
+            <button className="px-6 py-2 rounded-md font-bold text-xs bg-gradient-to-r from-[#E91E8C] to-[#FF6B1A] uppercase tracking-wide text-white shadow-md">
+              Points Table
+            </button>
+            <button className="px-6 py-2 rounded-md font-bold text-xs bg-white/5 border border-white/10 text-white/50 hover:text-white uppercase tracking-wide transition-all">
+              Playoffs
+            </button>
+          </div>
 
-          {/* Points Table */}
+          {/* Massive 1-32 Leaderboard Layout */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="bg-[#141414]/80 backdrop-blur-md border border-white/[0.08] rounded-2xl overflow-hidden"
+            className="bg-[#0d0d0d] border border-white/[0.06] rounded-2xl shadow-2xl overflow-hidden p-1"
           >
-            <SortableTable data={pointsTable} columns={columns} />
+            <div className="w-full overflow-x-auto">
+              <SortableTable data={pointsTable} columns={columns} />
+            </div>
           </motion.div>
         </div>
       </main>

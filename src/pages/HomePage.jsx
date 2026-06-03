@@ -12,12 +12,15 @@ import MatchCard from '@/components/MatchCard.jsx';
 import NewsCard from '@/components/NewsCard.jsx';
 import PlayerCard from '@/components/PlayerCard.jsx';
 import StatsBar from '@/components/StatsBar.jsx';
+import PointsTableWidget from "@/components/PointsTableWidget.jsx"; // Component successfully linked
 import { matches, news, players, pointsTable, tournamentStats } from '@/lib/mockData.js';
+
 const HomePage = () => {
   const featuredMatch = matches.find(m => m.status === 'upcoming') || matches[0];
   const latestNews = news.slice(0, 4);
   const featuredPlayer = players[0];
   const topTeams = pointsTable.slice(0, 4);
+
   return <>
       <Helmet>
         <title>ISCL - India's Biggest Softball Cricket League</title>
@@ -110,8 +113,11 @@ const HomePage = () => {
             duration: 0.5,
             delay: 0.4
           }} className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="px-8 py-4 rounded-full bg-gradient-to-r from-[#2563EB] to-[#8B5CF6] text-white font-bold text-lg hover:brightness-110 transition-all duration-200 active:scale-[0.98] shadow-lg shadow-[#2563EB]/50">
-                Buy tickets
+              <button 
+                onClick={() => window.dispatchEvent(new Event('open-registration'))}
+                className="px-8 py-4 rounded-full bg-gradient-to-r from-[#2563EB] to-[#8B5CF6] text-white font-bold text-lg hover:brightness-110 transition-all duration-200 active:scale-[0.98] shadow-lg shadow-[#2563EB]/50"
+              >
+                Register now
               </button>
               <button className="px-8 py-4 rounded-full bg-gradient-to-r from-[#E91E8C] to-[#FF6B1A] text-white font-bold text-lg hover:brightness-110 transition-all duration-200 active:scale-[0.98] shadow-lg shadow-[#E91E8C]/50">
                 Watch live
@@ -148,65 +154,8 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Points Table Preview */}
-      <section className="py-20 bg-gradient-to-b from-[#0A0A0A] to-[#141414]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div initial={{
-          opacity: 0,
-          y: 20
-        }} whileInView={{
-          opacity: 1,
-          y: 0
-        }} viewport={{
-          once: true
-        }} transition={{
-          duration: 0.5
-        }}>
-            <div className="flex items-center justify-between mb-8">
-              <h2 className="text-3xl md:text-4xl font-bold text-white" style={{
-              fontFamily: 'Rajdhani, sans-serif'
-            }}>
-                Points table
-              </h2>
-              <Link to="/points-table" className="text-[#2563EB] font-semibold hover:text-[#2563EB]/80 transition-colors duration-200">
-                View full table →
-              </Link>
-            </div>
-
-            <div className="bg-[#141414]/80 backdrop-blur-md border border-white/[0.08] rounded-2xl overflow-hidden">
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="border-b border-white/[0.08]">
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-white/80">Pos</th>
-                      <th className="px-4 py-3 text-left text-sm font-semibold text-white/80">Team</th>
-                      <th className="px-4 py-3 text-center text-sm font-semibold text-white/80">P</th>
-                      <th className="px-4 py-3 text-center text-sm font-semibold text-white/80">W</th>
-                      <th className="px-4 py-3 text-center text-sm font-semibold text-white/80">L</th>
-                      <th className="px-4 py-3 text-center text-sm font-semibold text-white/80">Pts</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {topTeams.map(row => <tr key={row.position} className="border-b border-white/[0.08] hover:bg-white/5 transition-colors duration-200">
-                        <td className="px-4 py-4 text-sm text-white font-bold">{row.position}</td>
-                        <td className="px-4 py-4">
-                          <div className="flex items-center gap-3">
-                            <span className="text-2xl">{row.team.logo}</span>
-                            <span className="text-sm font-semibold text-white">{row.team.name}</span>
-                          </div>
-                        </td>
-                        <td className="px-4 py-4 text-center text-sm text-white">{row.played}</td>
-                        <td className="px-4 py-4 text-center text-sm text-white">{row.won}</td>
-                        <td className="px-4 py-4 text-center text-sm text-white">{row.lost}</td>
-                        <td className="px-4 py-4 text-center text-sm font-bold text-white">{row.points}</td>
-                      </tr>)}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+      {/* Replaced Old Static Table Layout with the New Premium Scrollable Cards Widget */}
+      <PointsTableWidget />
 
       {/* Latest News */}
       <section className="py-20 bg-[#141414]">

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Route, Routes, BrowserRouter as Router } from 'react-router-dom';
 import ScrollToTop from './components/ScrollToTop.jsx';
 import HomePage from './pages/HomePage.jsx';
@@ -9,11 +9,29 @@ import PlayersPage from './pages/PlayersPage.jsx';
 import NewsPage from './pages/NewsPage.jsx';
 import AboutPage from './pages/AboutPage.jsx';
 import PlayerProfilePage from './pages/PlayerProfilePage.jsx';
+import PartnerPage from "./pages/PartnerPage.jsx";
+import RegistrationModal from './components/RegistrationModal.jsx';
 
+import AllRounderRegistration from './pages/AllRounderRegistration.jsx';
+import SpecialistRegistration from './pages/SpecialistRegistration.jsx';
 function App() {
+    const [isRegisterOpen, setIsRegisterOpen] = useState(false);
+
+    useEffect(() => {
+        const handleOpenModal = () => setIsRegisterOpen(true);
+        window.addEventListener('open-registration', handleOpenModal);
+        return () => window.removeEventListener('open-registration', handleOpenModal);
+    }, []);
+
     return (
         <Router>
             <ScrollToTop />
+            
+            <RegistrationModal 
+                isOpen={isRegisterOpen} 
+                onClose={() => setIsRegisterOpen(false)} 
+            />
+
             <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/teams" element={<TeamsPage />} />
@@ -23,6 +41,9 @@ function App() {
                 <Route path="/players/:playerId" element={<PlayerProfilePage />} />
                 <Route path="/news" element={<NewsPage />} />
                 <Route path="/about" element={<AboutPage />} />
+                <Route path="/register-allrounder" element={<AllRounderRegistration />} />
+                <Route path="/register-specialist" element={<SpecialistRegistration />} />
+                <Route path="/partner" element={<PartnerPage />} />
                 <Route path="*" element={
                     <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center">
                         <div className="text-center">

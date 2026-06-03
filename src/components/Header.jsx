@@ -7,6 +7,7 @@ const Header = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
 
+  // "Partner with ISCL" removed from here so it doesn't stay in the middle menu
   const navLinks = [
     { name: 'Home', path: '/' },
     { name: 'Teams', path: '/teams' },
@@ -24,19 +25,19 @@ const Header = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-         <Link to="/" className="flex items-center gap-3 group">
-          <div className="relative">
-            <div className="absolute inset-0 bg-gradient-to-r from-[#E91E8C] via-[#8B5CF6] to-[#2563EB] rounded-lg blur-lg opacity-0 group-hover:opacity-50 transition-opacity duration-300 "></div>
-
+          <Link to="/" className="flex items-center gap-3 group">
             <div className="relative">
-              <img
-                src="/images/logo.png"
-                alt="ISCL"
-                className="h-12 w-auto sm:h-14 md:h-16"
-              />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#E91E8C] via-[#8B5CF6] to-[#2563EB] rounded-lg blur-lg opacity-0 group-hover:opacity-50 transition-opacity duration-300"></div>
+
+              <div className="relative">
+                <img
+                  src="/images/logo.png"
+                  alt="ISCL"
+                  className="h-12 w-auto sm:h-14 md:h-16"
+                />
+              </div>
             </div>
-          </div>
-        </Link>
+          </Link>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center gap-8">
@@ -62,15 +63,17 @@ const Header = () => {
             ))}
           </nav>
 
-          {/* Watch Live Button */}
+          {/* Partner with ISCL Action Button (Replaced Watch Live) */}
           <div className="hidden md:block">
-            <button className="relative px-6 py-2 rounded-full bg-gradient-to-r from-[#E91E8C] to-[#FF6B1A] text-white font-semibold text-sm overflow-hidden group transition-all duration-200 active:scale-[0.98]">
+            <Link 
+              to="/partner"
+              className="inline-block relative px-6 py-2 rounded-full bg-gradient-to-r from-[#E91E8C] to-[#FF6B1A] text-white font-semibold text-sm overflow-hidden group transition-all duration-200 active:scale-[0.98]"
+            >
               <div className="absolute inset-0 bg-gradient-to-r from-[#FF6B1A] to-[#E91E8C] opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              <span className="relative flex items-center gap-2">
-                <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
-                Watch live
+              <span className="relative flex items-center justify-center">
+                PARTNER WITH US
               </span>
-            </button>
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -109,12 +112,15 @@ const Header = () => {
                   {link.name}
                 </Link>
               ))}
-              <button className="w-full mt-4 px-6 py-3 rounded-full bg-gradient-to-r from-[#E91E8C] to-[#FF6B1A] text-white font-semibold text-sm transition-all duration-200 active:scale-[0.98]">
-                <span className="flex items-center justify-center gap-2">
-                  <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
-                  Watch live
-                </span>
-              </button>
+              
+              {/* Mobile CTA Button for Partner with ISCL */}
+              <Link 
+                to="/partner"
+                onClick={() => setMobileMenuOpen(false)}
+                className="block text-center mt-4 px-6 py-3 rounded-full bg-gradient-to-r from-[#E91E8C] to-[#FF6B1A] text-white font-semibold text-sm transition-all duration-200 active:scale-[0.98]"
+              >
+                <span>Partner with ISCL</span>
+              </Link>
             </nav>
           </motion.div>
         )}
