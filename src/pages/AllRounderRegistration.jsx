@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
 import { User, MapPin, Award, ShieldCheck, ArrowRight } from 'lucide-react';
-import { INDIA_STATES_AND_UTS } from '../utils/indiaStates';
 
 export default function AllRounderRegistration() {
   const [formData, setFormData] = useState({
-    fullName: '', whatsapp: '', email: '', state: '', district: '', pincode: '',
-    battingHand: '', bowlingHand: '', bowlingStyle: ''
+    fullName: '', 
+    whatsapp: '', 
+    email: '', 
+    district: '', 
+    pincode: '',
+    battingHand: '', 
+    bowlingHand: '', 
+    bowlingStyle: ''
   });
 
   const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -23,7 +28,7 @@ export default function AllRounderRegistration() {
           All-Rounder <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-amber-500">Registration</span>
         </h1>
         <p className="mt-3 text-slate-400 text-xs sm:text-sm max-w-xl mx-auto leading-relaxed">
-          Step up to the crease. Prove your mettle in both departments and become the ultimate game-changer for ISCL Season 2.
+          Step up to the crease. Prove your mettle in both departments and become the ultimate game-changer for ISCL Season 3.
         </p>
       </div>
 
@@ -62,23 +67,7 @@ export default function AllRounderRegistration() {
             <h3 className="text-sm font-black uppercase tracking-wider text-slate-300 flex items-center gap-2 mb-4">
               <MapPin size={16} className="text-orange-500" /> Player Location
             </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                <div>
-                    <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">State / UT*</label>
-                    <select 
-                        name="state" 
-                        value={formData.state} 
-                        onChange={handleChange} 
-                        className="w-full bg-[#151c2c] border border-slate-800 rounded-lg px-3 py-3 text-sm text-slate-400 focus:outline-none focus:border-orange-500 transition-colors cursor-pointer"
-                    >
-                        <option value="" className="text-slate-600">Select State / UT</option>
-                        {INDIA_STATES_AND_UTS.map((state) => (
-                        <option key={state} value={state} className="text-white bg-[#111622]">
-                            {state}
-                        </option>
-                        ))}
-                    </select>
-                </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">District*</label>
                 <input type="text" name="district" placeholder="Enter District" value={formData.district} onChange={handleChange} className="w-full bg-[#151c2c] border border-slate-800 rounded-lg px-4 py-3 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-orange-500 transition-colors" />
@@ -90,44 +79,7 @@ export default function AllRounderRegistration() {
             </div>
           </div>
 
-          {/* Section: Sport Specialty Metrics */}
-          <div>
-            <h3 className="text-sm font-black uppercase tracking-wider text-slate-300 flex items-center gap-2 mb-4">
-              <Award size={16} className="text-orange-500" /> Player Profile Details
-            </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Role*</label>
-                <select name="role" disabled className="w-full bg-[#192235] border border-slate-800 rounded-lg px-3 py-3 text-sm text-slate-400 focus:outline-none cursor-not-allowed">
-                  <option>All-Rounder</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Batsman All Rounder Type*</label>
-                <select name="battingHand" value={formData.battingHand} onChange={handleChange} className="w-full bg-[#151c2c] border border-slate-800 rounded-lg px-3 py-3 text-sm text-white focus:outline-none focus:border-orange-500 transition-colors cursor-pointer">
-                  <option value="">Select Batting Hand</option>
-                  <option value="Right Hand">Right Hand Batsman</option>
-                  <option value="Left Hand">Left Hand Batsman</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Bowler All Rounder Hand*</label>
-                <select name="bowlingHand" value={formData.bowlingHand} onChange={handleChange} className="w-full bg-[#151c2c] border border-slate-800 rounded-lg px-3 py-3 text-sm text-white focus:outline-none focus:border-orange-500 transition-colors cursor-pointer">
-                  <option value="">Select Bowling Hand</option>
-                  <option value="Right Arm">Right Arm Bowler</option>
-                  <option value="Left Arm">Left Arm Bowler</option>
-                </select>
-              </div>
-              <div>
-                <label className="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">Bowler All Rounder Style*</label>
-                <select name="bowlingStyle" value={formData.bowlingStyle} onChange={handleChange} className="w-full bg-[#151c2c] border border-slate-800 rounded-lg px-3 py-3 text-sm text-white focus:outline-none focus:border-orange-500 transition-colors cursor-pointer">
-                  <option value="">Select Bowling Style</option>
-                  <option value="Fast">Pace / Fast Bowler</option>
-                  <option value="Spin">Spin Bowler</option>
-                </select>
-              </div>
-            </div>
-          </div>
+         
 
         </div>
 
@@ -157,7 +109,27 @@ export default function AllRounderRegistration() {
               </div>
             </div>
 
-            <button className="w-full mt-6 bg-orange-600 hover:bg-orange-500 active:scale-[0.99] text-white font-extrabold py-3.5 px-4 rounded-lg flex items-center justify-center gap-2 text-sm tracking-wider uppercase transition-all shadow-lg shadow-orange-600/20">
+            <button 
+              onClick={() => {
+                const baseRazorpayUrl = "https://pages.razorpay.com/pl_SjCoNYeAlyPOcn/view"; 
+                
+                const queryParams = new URLSearchParams({
+                  // Native System Fields
+                  'email': formData.email,
+                  'phone': formData.whatsapp,
+                  'contact': formData.whatsapp,
+
+                  // Custom Text Box Form Inputs Only
+                  'full_name_in_capitals': formData.fullName,
+                  'whatsapp_number': formData.whatsapp,
+                  'district': formData.district,
+                  'pincode': formData.pincode
+                }).toString();
+
+                window.open(`${baseRazorpayUrl}?${queryParams}`, '_blank');
+              }}
+              className="w-full mt-6 bg-orange-600 hover:bg-orange-500 active:scale-[0.99] text-white font-extrabold py-3.5 px-4 rounded-lg flex items-center justify-center gap-2 text-sm tracking-wider uppercase transition-all shadow-lg shadow-orange-600/20"
+            >
               Pay ₹ 1,500.00 <ArrowRight size={16} />
             </button>
 
