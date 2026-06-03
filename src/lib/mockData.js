@@ -23,7 +23,7 @@ export const teams = [
   { id: 'kerala', name: 'Kerala', city: 'Kerala', logo: '🏏', color: '#FF6B1A', stats: { matches: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00' } },
   { id: 'uttar-pradesh-blue', name: 'Uttar Pradesh Blue', city: 'Uttar Pradesh', logo: '🏏', color: '#AACC00', stats: { matches: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00' } },
   { id: 'west-bengal', name: 'West Bengal', city: 'West Bengal', logo: '🏏', color: '#8B5CF6', stats: { matches: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00' } },
-  { id: 'madhya-pradesh', name: 'Madhya Pradesh', city: 'Madhya Pradesh', logo: '🏏', color: '#F59E0B', ... },
+  { id: 'madhya-pradesh', name: 'Madhya Pradesh', city: 'Madhya Pradesh', logo: '🏏', color: '#F59E0B', stats: { matches: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00' } },
   { id: 'north-zone', name: 'North Zone', city: 'North Zone', logo: '🏏', color: '#10B981', stats: { matches: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00' } },
   { id: 'jammu-and-kashmir', name: 'Jammu and Kashmir', city: 'Jammu and Kashmir', logo: '🏏', color: '#EC4899', stats: { matches: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00' } },
   { id: 'haryana', name: 'Haryana', city: 'Haryana', logo: '🏏', color: '#2563EB', stats: { matches: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00' } },
