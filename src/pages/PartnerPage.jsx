@@ -54,14 +54,16 @@ const PartnerPage = () => {
     { value: "1B+", label: "Digital & Broadcast Views", icon: TrendingUp },
   ];
 
-  // Verified mapping path structure
+  // Added Hindu.png and big_fm.jpg to the verified mapping paths
   const pastSponsors = [
     { name: "Aarna Tech Build", logo: "/images/Aarna.png" },
-    { name: "Ameya Quartet", logo: "/images/Ameya.png" }, 
+    { name: "Ameya Quartet", logo: "/images/Ameya.jpg" }, 
     { name: "Aanya", logo: "/images/Aanya.png" },
     { name: "Virya", logo: "/images/Virya.jpg" },
     { name: "Carplanet", logo: "/images/Carplanet.jpeg" },
     { name: "M/S Naveesh", logo: "/images/Naveen.png" },
+    { name: "The Hindu", logo: "/images/Hindu.png" },
+    { name: "BIG FM", logo: "/images/big_fm.png" },
   ];
 
   return (
@@ -248,8 +250,8 @@ const PartnerPage = () => {
           </motion.div>
         </section>
 
-        {/* Real Partners Grid Section - Perfectly Balanced 3x2 Grid */}
-        <section className="max-w-4xl mx-auto px-6 mb-28 relative z-10">
+        {/* Real Partners Grid Section - Updated to a perfectly balanced 4x2 desktop layout */}
+        <section className="max-w-5xl mx-auto px-6 mb-28 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -264,8 +266,7 @@ const PartnerPage = () => {
               Our Valued Partners
             </h2>
 
-            {/* Changed to grid-cols-2 for mobile and sm:grid-cols-3 / md:grid-cols-3 for desktop to force a 3x2 layout */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-6 bg-white/[0.02] border border-white/[0.05] p-8 md:p-10 rounded-3xl backdrop-blur-sm justify-items-center items-center">
+            <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-4 gap-6 bg-white/[0.02] border border-white/[0.05] p-8 md:p-10 rounded-3xl backdrop-blur-sm justify-items-center items-center">
               {pastSponsors.map((sponsor, idx) => (
                 <motion.div
                   key={idx}
