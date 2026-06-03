@@ -92,7 +92,7 @@ const PointsTablePage = () => {
               Points table
             </h1>
             <p className="text-xl text-white/60 max-w-2xl mx-auto">
-              Track team standings and playoff qualification
+              Track team standings and playoff qualificationgit remote -v
             </p>
           </motion.div>
 

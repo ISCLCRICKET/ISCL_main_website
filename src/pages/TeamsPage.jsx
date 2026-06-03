@@ -34,7 +34,7 @@ const TeamsPage = () => {
               Meet the squads
             </h1>
             <p className="text-xl text-white/60 max-w-2xl mx-auto">
-              Eight teams battling for glory in India's most exciting street cricket tournament
+              Thirty two teams battling for glory in India's most exciting street cricket tournament
             </p>
           </motion.div>
 
