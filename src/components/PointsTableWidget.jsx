@@ -6,14 +6,11 @@ import { pointsTable } from "@/lib/mockData.js";
 
 const PointsTableWidget = () => {
   const scrollRef = useRef(null);
-
-  // REMOVED .slice(0, 5) to display all 32 teams from the pointsTable array
   const previewTeams = pointsTable;
 
   const scroll = (direction) => {
     if (scrollRef.current) {
-      const { scrollLeft, clientWidth } = scrollRef.current;
-      // Increased scroll amount to move by one full card width
+      const { scrollLeft } = scrollRef.current;
       const scrollTo = direction === "left" ? scrollLeft - 320 : scrollLeft + 320;
       scrollRef.current.scrollTo({ left: scrollTo, behavior: "smooth" });
     }
@@ -53,12 +50,14 @@ const PointsTableWidget = () => {
           {previewTeams.map((team, idx) => {
             const isQualified = team.position <= 4;
             const nrrValue = parseFloat(team.nrr) || 0;
+            
+            // Safe guard fallback layout configuration if teams[idx] array index evaluates to undefined
+            const teamInfo = team.team || { name: `Team Slot ${team.position}`, logo: '🏏' };
 
             return (
               <motion.div
                 key={idx}
                 whileHover={{ y: -4, borderColor: "rgba(255,255,255,0.15)" }}
-                // Added flex-shrink-0 to ensure all 32 cards maintain their size
                 className="min-w-[280px] sm:min-w-[300px] flex-shrink-0 bg-[#0d0d0d] border border-white/[0.06] rounded-2xl p-6 snap-start flex flex-col justify-between shadow-xl transition-all duration-300 relative group"
               >
                 <div>
@@ -76,20 +75,20 @@ const PointsTableWidget = () => {
 
                     <div className="text-right max-w-[180px]">
                       <h3 className="text-base font-bold uppercase tracking-wide truncate text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-[#E91E8C] group-hover:to-[#FF6B1A] transition-all duration-300">
-                        {team.team.name}
+                        {teamInfo.name}
                       </h3>
                     </div>
                   </div>
 
                   <div className="h-24 flex items-center justify-center my-4 bg-white/[0.01] rounded-xl border border-white/[0.02] p-2 relative overflow-hidden">
-                    {team.team.logo && typeof team.team.logo === 'string' && team.team.logo.startsWith('/') ? (
+                    {teamInfo.logo && typeof teamInfo.logo === 'string' && teamInfo.logo.startsWith('/') ? (
                       <img 
-                        src={team.team.logo} 
+                        src={teamInfo.logo} 
                         alt="" 
                         className="max-h-full max-w-full object-contain filter drop-shadow-[0_4px_10px_rgba(255,255,255,0.05)]"
                       />
                     ) : (
-                      <span className="text-4xl filter drop-shadow-md">{team.team.logo || '🏏'}</span>
+                      <span className="text-4xl filter drop-shadow-md">{teamInfo.logo || '🏏'}</span>
                     )}
                   </div>
 
@@ -120,7 +119,7 @@ const PointsTableWidget = () => {
                 <div className="mt-auto pt-2 border-t border-white/[0.03]">
                   <p className="text-[10px] uppercase tracking-wider text-white/40 font-bold mb-2.5">Recent form</p>
                   <div className="flex gap-1.5">
-                    {(team.lastFive || []).slice(0, 5).map((result, i) => (
+                    {(team.lastFive || []).map((result, i) => (
                       <span 
                         key={i} 
                         className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold border transition-transform duration-200 hover:scale-110 ${

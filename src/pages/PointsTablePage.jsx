@@ -16,7 +16,6 @@ const PointsTablePage = () => {
       render: (row) => (
         <div className="flex items-center justify-center gap-2 font-mono font-bold text-sm">
           <span>{row.position}</span>
-          {/* Replicated the Q badge for the top 4 teams */}
           {row.position <= 4 && (
             <span className="w-3.5 h-3.5 rounded-sm bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-[8px] font-black text-emerald-400">
               Q
@@ -29,18 +28,22 @@ const PointsTablePage = () => {
       key: 'team',
       label: 'Team',
       sortable: false,
-      render: (row) => (
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-white/5 p-1 flex items-center justify-center">
-            {row.team.logo && row.team.logo.startsWith('/') ? (
-              <img src={row.team.logo} alt="" className="max-w-full max-h-full object-contain" onError={(e) => e.target.style.display='none'} />
-            ) : (
-              <span className="text-xl">{row.team.logo || '🏏'}</span>
-            )}
+      render: (row) => {
+        // Safe guard fallback check if specific teams[index] is undefined
+        const teamData = row.team || { name: `Team Slot ${row.position}`, logo: '🏏' };
+        return (
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-full bg-white/5 p-1 flex items-center justify-center">
+              {teamData.logo && typeof teamData.logo === 'string' && teamData.logo.startsWith('/') ? (
+                <img src={teamData.logo} alt="" className="max-w-full max-h-full object-contain" onError={(e) => e.target.style.display='none'} />
+              ) : (
+                <span className="text-xl">{teamData.logo || '🏏'}</span>
+              )}
+            </div>
+            <span className="font-bold text-white/90">{teamData.name}</span>
           </div>
-          <span className="font-bold text-white/90">{row.team.name}</span>
-        </div>
-      )
+        );
+      }
     },
     { key: 'played', label: 'P', sortable: true },
     { key: 'won', label: 'W', sortable: true },
@@ -109,13 +112,11 @@ const PointsTablePage = () => {
       <MarqueeScoreTicker />
       <Header />
 
-      {/* Fixed top padding (pt-32) to prevent absolute header layout overlap */}
       <main className="min-h-screen bg-[#060606] text-white pt-32 pb-20 relative overflow-hidden">
         <div className="absolute top-1/4 right-[-10%] w-[400px] h-[400px] bg-blue-600/5 rounded-full blur-[120px] pointer-events-none" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          {/* Header Layout Section */}
           <div className="border-b border-white/[0.08] pb-6 mb-8">
             <h1 className="text-4xl font-extrabold uppercase tracking-tight text-white" style={{ fontFamily: 'Rajdhani, sans-serif' }}>
               Points table
@@ -123,7 +124,6 @@ const PointsTablePage = () => {
             <p className="text-sm text-white/40 font-medium tracking-wide mt-1 uppercase">Season 2026 Standings</p>
           </div>
 
-          {/* Tab Menu Options */}
           <div className="flex gap-3 mb-8">
             <button className="px-6 py-2 rounded-md font-bold text-xs bg-gradient-to-r from-[#E91E8C] to-[#FF6B1A] uppercase tracking-wide text-white shadow-md">
               Points Table
@@ -133,7 +133,6 @@ const PointsTablePage = () => {
             </button>
           </div>
 
-          {/* Massive 1-32 Leaderboard Layout */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
