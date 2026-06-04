@@ -23,7 +23,7 @@ export const teams = [
   { id: 'kerala', name: 'Kerala', city: 'Kerala', logo: '🏏', color: '#FF6B1A', stats: { matches: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00' } },
   { id: 'uttar-pradesh-blue', name: 'Uttar Pradesh Blue', city: 'Uttar Pradesh', logo: '🏏', color: '#AACC00', stats: { matches: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00' } },
   { id: 'west-bengal', name: 'West Bengal', city: 'West Bengal', logo: '🏏', color: '#8B5CF6', stats: { matches: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00' } },
-  { id: 'madhya-pradesh', name: 'Madhya Pradesh', city: 'Madhya Pradesh', logo: '🏏', color: '#F59E0B', stats: { matches: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00' } },
+  { id: 'madhya-pradesh', name: 'Madhya Pradesh', city: 'Madhya Pradesh', logo: 'F59E0B', stats: { matches: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00' } },
   { id: 'north-zone', name: 'North Zone', city: 'North Zone', logo: '🏏', color: '#10B981', stats: { matches: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00' } },
   { id: 'jammu-and-kashmir', name: 'Jammu and Kashmir', city: 'Jammu and Kashmir', logo: '🏏', color: '#EC4899', stats: { matches: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00' } },
   { id: 'haryana', name: 'Haryana', city: 'Haryana', logo: '🏏', color: '#2563EB', stats: { matches: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00' } },
@@ -36,39 +36,60 @@ export const teams = [
   { id: 'mumbai', name: 'Mumbai', city: 'Mumbai', logo: '🏏', color: '#EC4899', stats: { matches: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00' } }
 ];
 
-// 2. UNIFIED MATCH SCHEDULER MAP
 export const matches = [
-  {
-    id: 1,
-    team1: teams[0], // Gujarat
-    team2: teams[1], // Maharashtra
-    date: '2026-06-05',
-    time: '19:30',
-    venue: 'Wankhede Stadium, Mumbai',
-    status: 'upcoming',
-    countdown: new Date('2026-06-05T19:30:00').getTime()
-  },
-  {
-    id: 2,
-    team1: teams[4], // Delhi
-    team2: teams[29], // Bengaluru
-    date: '2026-06-06',
-    time: '15:00',
-    venue: 'M. Chinnaswamy Stadium, Bangalore',
-    status: 'upcoming',
-    countdown: new Date('2026-06-06T15:00:00').getTime()
-  },
-  {
-    id: 3,
-    team1: teams[2], // Rajasthan
-    team2: teams[3], // Uttar Pradesh Red
-    date: '2026-05-28',
-    time: '19:30',
-    venue: 'Eden Gardens, Kolkata',
-    status: 'completed',
-    score: { team1: '142/6', team2: '140/9' },
-    winner: teams[2]
-  }
+  // Knockouts
+  { id: 101, team1: { name: 'UTTAR PRADESH BLUE' }, team2: { name: 'PUNJAB' }, date: '2025-12-21', time: '19:30', venue: 'Kini Cricket Ground', status: 'completed', stage: 'FINAL', score: { team1: '104/6', team2: '108/8' }, summary: 'Punjab won by 2 wickets.', winner: 'PUNJAB' },
+  { id: 102, team1: { name: 'PUNJAB' }, team2: { name: 'UTTARAKHAND' }, date: '2025-12-19', time: '16:00', venue: 'Kini Cricket Ground', status: 'completed', stage: 'SEMIFINAL 2', score: { team1: '70/8', team2: '62/7' }, summary: 'Punjab won by 8 runs.', winner: 'PUNJAB' },
+  { id: 103, team1: { name: 'UTTAR PRADESH BLUE' }, team2: { name: 'RAJASTHAN' }, date: '2025-12-18', time: '16:00', venue: 'Kini Cricket Ground', status: 'completed', stage: 'SEMIFINAL 1', score: { team1: '82/7', team2: '77/8' }, summary: 'UP Blue won by 5 runs.', winner: 'UTTAR PRADESH BLUE' },
+  { id: 104, team1: { name: 'PUNJAB' }, team2: { name: 'KARNATAKA' }, date: '2025-12-17', time: '14:00', venue: 'Kini Cricket Ground', status: 'completed', stage: 'QUARTER FINAL 4', score: { team1: '89/9', team2: '73/5' }, summary: 'Punjab won by 16 runs.', winner: 'PUNJAB' },
+  { id: 105, team1: { name: 'RAJASTHAN' }, team2: { name: 'ODISHA' }, date: '2025-12-17', time: '11:30', venue: 'Kini Cricket Ground', status: 'completed', stage: 'QUARTER FINAL 3', score: { team1: '102/8', team2: '62/10' }, summary: 'Rajasthan won by 40 runs.', winner: 'RAJASTHAN' },
+  { id: 106, team1: { name: 'HARYANA' }, team2: { name: 'KARNATAKA' }, date: '2025-12-16', time: '14:00', venue: 'Kini Cricket Ground', status: 'completed', stage: 'SUPER 16 M-8', score: { team1: '62/10', team2: '64/2' }, summary: 'Karnataka won by 8 wickets.', winner: 'KARNATAKA' },
+  { id: 107, team1: { name: 'ODISHA' }, team2: { name: 'MUMBAI' }, date: '2025-12-16', time: '09:30', venue: 'Kini Cricket Ground', status: 'completed', stage: 'SUPER 16 M-7', summary: 'Odisha won by 19 runs.', winner: 'ODISHA' },
+  { id: 108, team1: { name: 'WEST BENGAL' }, team2: { name: 'PUNJAB' }, date: '2025-12-12', time: '19:00', venue: 'Kini Cricket Ground', status: 'completed', stage: 'SUPER 16 M-6', score: { team1: '64/9', team2: '65/10' }, summary: 'Punjab Golden Fighters won by 1 runs.', winner: 'PUNJAB' },
+  { id: 109, team1: { name: 'RAJASTHAN' }, team2: { name: 'DELHI' }, date: '2025-12-12', time: '16:00', venue: 'Kini Cricket Ground', status: 'completed', stage: 'SUPER 16 M-5', score: { team1: '80/6', team2: '56/10' }, summary: 'Royal Rajaputs (Rajasthan) won by 24 runs.', winner: 'RAJASTHAN' },
+  { id: 110, team1: { name: 'MADHYA PRADESH' }, team2: { name: 'ANDHRA PRADESH' }, date: '2025-12-08', time: '14:00', venue: 'Kini Cricket Ground', status: 'completed', stage: 'SUPER 16 M-4', score: { team1: '72/8', team2: '73/3' }, summary: 'Andhra Warriors won by 7 wickets.', winner: 'ANDHRA PRADESH' },
+  { id: 111, team1: { name: 'CHANDIGARH' }, team2: { name: 'UTTAR PRADESH BLUE' }, date: '2025-12-08', time: '11:00', venue: 'Kini Cricket Ground', status: 'completed', stage: 'SUPER 16 M-3', score: { team1: '82/3', team2: '95/7' }, summary: 'Kings UP Blue won by 13 runs.', winner: 'UTTAR PRADESH BLUE' },
+  { id: 112, team1: { name: 'UTTARAKHAND' }, team2: { name: 'MAHARASHTRA' }, date: '2025-12-04', time: '17:00', venue: 'Kini Cricket Ground', status: 'completed', stage: 'SUPER 16 M-2', score: { team1: '55/1', team2: '54/8' }, summary: 'Uttara Raptors won by 9 wickets.', winner: 'UTTARAKHAND' },
+  { id: 113, team1: { name: 'GUJARAT' }, team2: { name: 'TELANGANA' }, date: '2025-12-04', time: '11:00', venue: 'Kini Cricket Ground', status: 'completed', stage: 'SUPER 16 M-1', score: { team1: '78/7', team2: '79/4' }, summary: 'Telangana Singhams won by 6 wickets.', winner: 'TELANGANA' },
+  // Group Stage (Matches 38-1)
+  { id: 38, team1: { name: 'HARYANA' }, team2: { name: 'JAMMU AND KASHMIR' }, date: '2025-12-13', time: '10:30', status: 'completed', stage: 'ISCL MATCH 38', score: { team1: '80/3', team2: '78/7' }, summary: 'Phoenix Haryana won by 7 wickets.', winner: 'HARYANA' },
+  { id: 37, team1: { name: 'MUMBAI' }, team2: { name: 'HIMACHAL PRADESH' }, date: '2025-12-12', time: '21:00', status: 'completed', stage: 'ISCL MATCH 37', score: { team1: '80/10', team2: '75/4' }, summary: 'Mumbai Royals won by 5 runs.', winner: 'MUMBAI' },
+  { id: 36, team1: { name: 'DELHI' }, team2: { name: 'PUNJAB' }, date: '2025-12-12', time: '18:00', status: 'completed', stage: 'ISCL MATCH 36', score: { team1: '69/6', team2: '72/5' }, summary: 'Punjab Golden Fighters won by 5 wickets.', winner: 'PUNJAB' },
+  { id: 35, team1: { name: 'DELHI' }, team2: { name: 'ASSAM' }, date: '2025-12-11', time: '20:00', status: 'completed', stage: 'ISCL MATCH 35', score: { team1: '73/7', team2: '75/3' }, summary: 'Hornbill Tigers (Assam) won by 7 wickets.', winner: 'ASSAM' },
+  { id: 34, team1: { name: 'PUNJAB' }, team2: { name: 'JHARKHAND' }, date: '2025-12-11', time: '17:30', status: 'completed', stage: 'ISCL MATCH 34', score: { team1: '114/9', team2: '82/6' }, summary: 'Punjab Golden Fighters won by 32 runs.', winner: 'PUNJAB' },
+  { id: 33, team1: { name: 'GOA' }, team2: { name: 'WEST BENGAL' }, date: '2025-12-11', time: '15:00', status: 'completed', stage: 'ISCL MATCH 33', score: { team1: '94/6', team2: '90/3' }, summary: 'Kadamba Kings Goa won by 4 runs.', winner: 'GOA' },
+  { id: 32, team1: { name: 'UTTAR PRADESH RED' }, team2: { name: 'RAJASTHAN' }, date: '2025-12-11', time: '12:00', status: 'completed', stage: 'ISCL MATCH 32', score: { team1: '73/10', team2: '90/4' }, summary: 'Royal Rajputs won by 17 runs.', winner: 'RAJASTHAN' },
+  { id: 31, team1: { name: 'UTTAR PRADESH RED' }, team2: { name: 'WEST BENGAL' }, date: '2025-12-10', time: '20:30', status: 'completed', stage: 'ISCL MATCH 31', score: { team1: '55/8', team2: '90/7' }, summary: 'Ma Dugga Warriors won by 35 runs.', winner: 'WEST BENGAL' },
+  { id: 30, team1: { name: 'ASSAM' }, team2: { name: 'PUNJAB' }, date: '2025-12-10', time: '18:00', status: 'completed', stage: 'ISCL MATCH 30', score: { team1: '41/7', team2: '88/7' }, summary: 'Punjab Golden Fighters won by 47 runs.', winner: 'PUNJAB' },
+  { id: 29, team1: { name: 'DELHI' }, team2: { name: 'JHARKHAND' }, date: '2025-12-10', time: '15:30', status: 'completed', stage: 'ISCL MATCH 29', score: { team1: '68/10', team2: '60/6' }, summary: 'Delhi Dare Strikers won by 8 runs.', winner: 'DELHI' },
+  { id: 28, team1: { name: 'GOA' }, team2: { name: 'RAJASTHAN' }, date: '2026-01-10', time: '13:00', status: 'completed', stage: 'ISCL MATCH 28', score: { team1: '77/10', team2: '91/3' }, summary: 'Royal Rajaputs won by 14 runs.', winner: 'RAJASTHAN' },
+  { id: 27, team1: { name: 'RAJASTHAN' }, team2: { name: 'WEST BENGAL' }, date: '2026-01-09', time: '20:00', status: 'completed', stage: 'ISCL MATCH 27', score: { team1: '70/2', team2: '69/8' }, summary: 'Royal Rajaputs won by 8 wickets.', winner: 'RAJASTHAN' },
+  { id: 26, team1: { name: 'GOA' }, team2: { name: 'UTTAR PRADESH RED' }, date: '2025-12-09', time: '16:00', status: 'completed', stage: 'ISCL MATCH 26', score: { team1: '71/8', team2: '72/8' }, summary: 'Twin Hills United won by 1 run.', winner: 'UTTAR PRADESH RED' },
+  { id: 25, team1: { name: 'ASSAM' }, team2: { name: 'JHARKHAND' }, date: '2025-12-09', time: '13:30', status: 'completed', stage: 'ISCL MATCH 25', score: { team1: '67/8', team2: '90/6' }, summary: 'Jharkhand Strikers won by 23 runs.', winner: 'JHARKHAND' },
+  { id: 24, team1: { name: 'LAKSHADWEEP' }, team2: { name: 'ANDAMAN' }, date: '2025-12-07', time: '18:00', status: 'completed', stage: 'ISCL MATCH 24', score: { team1: '65/5', team2: '95/6' }, summary: 'Andaman Admirals won by 30 runs.', winner: 'ANDAMAN' },
+  { id: 23, team1: { name: 'SOUTH ZONE' }, team2: { name: 'UTTAR PRADESH BLUE' }, date: '2025-12-07', time: '16:00', status: 'completed', stage: 'ISCL MATCH 23', score: { team1: '60/8', team2: '98/6' }, summary: 'Kings UP Blue won by 38 runs.', winner: 'UTTAR PRADESH BLUE' },
+  { id: 22, team1: { name: 'ANDHRA PRADESH' }, team2: { name: 'ANDAMAN' }, date: '2025-12-07', time: '13:30', status: 'completed', stage: 'ISCL MATCH 22', score: { team1: '93/4', team2: '76/3' }, summary: 'Andhra Warriors won by 17 runs.', winner: 'ANDHRA PRADESH' },
+  { id: 21, team1: { name: 'MADHYA PRADESH' }, team2: { name: 'SOUTH ZONE' }, date: '2025-12-07', time: '11:00', status: 'completed', stage: 'ISCL MATCH 21', score: { team1: '58/9', team2: '59/9' }, summary: 'South Zone won by 1 runs.', winner: 'SOUTH ZONE' },
+  { id: 20, team1: { name: 'LAKSHADWEEP' }, team2: { name: 'CHANDIGARH' }, date: '2025-12-06', time: '19:00', status: 'completed', stage: 'ISCL MATCH 20', score: { team1: '35/10', team2: '36/1' }, summary: 'Chandigarh won by 9 wickets.', winner: 'CHANDIGARH' },
+  { id: 19, team1: { name: 'SOUTH ZONE' }, team2: { name: 'TAMIL NADU' }, date: '2025-12-06', time: '16:00', status: 'completed', stage: 'ISCL MATCH 19', score: { team1: '121/5', team2: '58/9' }, summary: 'South Zone won by 63 runs.', winner: 'SOUTH ZONE' },
+  { id: 18, team1: { name: 'ANDHRA PRADESH' }, team2: { name: 'LAKSHADWEEP' }, date: '2025-12-06', time: '13:30', status: 'completed', stage: 'ISCL MATCH 18', score: { team1: '50/2', team2: '49/5' }, summary: 'Andhra Warriors won by 8 wickets.', winner: 'ANDHRA PRADESH' },
+  { id: 17, team1: { name: 'UTTAR PRADESH BLUE' }, team2: { name: 'MADHYA PRADESH' }, date: '2025-12-05', time: '20:00', status: 'completed', stage: 'ISCL MATCH 17', score: { team1: '79/8', team2: '81/5' }, summary: 'Malwa Royals won by 5 wickets.', winner: 'MADHYA PRADESH' },
+  { id: 16, team1: { name: 'CHANDIGARH' }, team2: { name: 'ANDAMAN' }, date: '2025-12-05', time: '17:30', status: 'completed', stage: 'ISCL MATCH 16', score: { team1: '94/6', team2: '70/6' }, summary: 'Chandigarh won by 24 runs.', winner: 'CHANDIGARH' },
+  { id: 15, team1: { name: 'MADHYA PRADESH' }, team2: { name: 'TAMIL NADU' }, date: '2025-12-05', time: '15:00', status: 'completed', stage: 'ISCL MATCH 15', score: { team1: '136/1', team2: '46/3' }, summary: 'Malwa Royals won by 90 runs.', winner: 'MADHYA PRADESH' },
+  { id: 14, team1: { name: 'ANDHRA PRADESH' }, team2: { name: 'CHANDIGARH' }, date: '2025-12-05', time: '12:00', status: 'completed', stage: 'ISCL MATCH 14', score: { team1: '98/5', team2: '147/2' }, summary: 'Chandigarh won by 49 runs.', winner: 'CHANDIGARH' },
+  { id: 13, team1: { name: 'UTTAR PRADESH BLUE' }, team2: { name: 'TAMIL NADU' }, date: '2025-12-04', time: '20:00', status: 'completed', stage: 'ISCL MATCH 13', score: { team1: '92/6', team2: '90/7' }, summary: 'Kings UP Blue won by 2 runs.', winner: 'UTTAR PRADESH BLUE' },
+  { id: 12, team1: { name: 'UTTARAKHAND' }, team2: { name: 'BENGALURU' }, date: '2025-12-04', time: '14:00', status: 'completed', stage: 'ISCL MATCH 12', score: { team1: '82/5', team2: '84/4' }, summary: 'Real Challengers Bengaluru won by 6 wickets.', winner: 'BENGALURU' },
+  { id: 11, team1: { name: 'NORTH EAST' }, team2: { name: 'MAHARASHTRA' }, date: '2025-12-03', time: '18:00', status: 'completed', stage: 'ISCL MATCH 11', score: { team1: '46/8', team2: '107/8' }, summary: 'Maharashtra won by 61 runs.', winner: 'MAHARASHTRA' },
+  { id: 10, team1: { name: 'TELANGANA' }, team2: { name: 'BIHAR' }, date: '2025-12-03', time: '15:30', status: 'completed', stage: 'ISCL MATCH 10', score: { team1: '103/6', team2: '90/9' }, summary: 'Telangana won by 13 runs.', winner: 'TELANGANA' },
+  { id: 9, team1: { name: 'GUJARAT' }, team2: { name: 'CHHATTISGARH' }, date: '2025-12-03', time: '15:30', status: 'completed', stage: 'ISCL MATCH 9', score: { team1: '120/8', team2: '39/10' }, summary: 'Gujarati Kings won by 81 runs.', winner: 'GUJARAT' },
+  { id: 8, team1: { name: 'UTTARAKHAND' }, team2: { name: 'TELANGANA' }, date: '2025-12-03', time: '15:30', status: 'completed', stage: 'ISCL MATCH 8', score: { team1: '127/5', team2: '80/8' }, summary: 'Uttara Raptors won by 47 runs.', winner: 'UTTARAKHAND' },
+  { id: 7, team1: { name: 'BENGALURU' }, team2: { name: 'BIHAR' }, date: '2025-12-02', time: '11:30', status: 'completed', stage: 'ISCL MATCH 7', score: { team1: '88/9', team2: '89/7' }, summary: 'Bihar won by 1 run.', winner: 'BIHAR' },
+  { id: 6, team1: { name: 'MAHARASHTRA' }, team2: { name: 'CHHATTISGARH' }, date: '2025-12-02', time: '14:30', status: 'completed', stage: 'ISCL MATCH 6', score: { team1: '59/9', team2: '54/9' }, summary: 'Maharashtra won by 5 runs.', winner: 'MAHARASHTRA' },
+  { id: 5, team1: { name: 'GUJARAT' }, team2: { name: 'NORTH EAST' }, date: '2025-12-02', time: '08:00', status: 'completed', stage: 'ISCL MATCH 5', score: { team1: '69/0', team2: '66/8' }, summary: 'Gujarati Kings won by 10 wickets.', winner: 'GUJARAT' },
+  { id: 4, team1: { name: 'BENGALURU' }, team2: { name: 'TELANGANA' }, date: '2025-12-02', time: '08:00', status: 'completed', stage: 'ISCL MATCH 4', score: { team1: '73/8', team2: '90/4' }, summary: 'Telangana won by 17 runs.', winner: 'TELANGANA' },
+  { id: 3, team1: { name: 'NORTH EAST' }, team2: { name: 'CHHATTISGARH' }, date: '2025-12-01', time: '15:30', status: 'completed', stage: 'ISCL MATCH 3', score: { team1: '72/4', team2: '73/1' }, summary: 'Raipur Rage won by 9 wickets.', winner: 'CHHATTISGARH' },
+  { id: 2, team1: { name: 'BIHAR' }, team2: { name: 'UTTARAKHAND' }, date: '2025-12-01', time: '13:00', status: 'completed', stage: 'ISCL MATCH 2', score: { team1: '69/7', team2: '70/5' }, summary: 'Uttara Raptors won by 5 wickets.', winner: 'UTTARAKHAND' },
+  { id: 1, team1: { name: 'GUJARAT' }, team2: { name: 'MAHARASHTRA' }, date: '2025-12-01', time: '10:00', status: 'completed', stage: 'ISCL MATCH 1', score: { team1: '109/5', team2: '42/10' }, summary: 'Gujarati Kings won by 67 runs.', winner: 'GUJARAT' }
 ];
 
 // 3. PLAYERS ROSTER DIRECTORY
@@ -169,38 +190,38 @@ export const news = [
 
 // 5. UNIFIED MASTER LEADERBOARD STANDINGS MATRIX (1-32)
 export const pointsTable = [
-  { position: 1, team: teams[0], played: 5, won: 4, lost: 1, nr: 0, points: 8, nrr: '+1.45', lastFive: ['W', 'W', 'L', 'W', 'W'], forRuns: '845/50.0', againstRuns: '710/50.0' },
-  { position: 2, team: teams[1], played: 5, won: 4, lost: 1, nr: 0, points: 8, nrr: '+1.12', lastFive: ['W', 'L', 'W', 'W', 'W'], forRuns: '790/48.2', againstRuns: '720/50.0' },
-  { position: 3, team: teams[2], played: 5, won: 3, lost: 2, nr: 0, points: 6, nrr: '+0.65', lastFive: ['L', 'W', 'W', 'L', 'W'], forRuns: '760/50.0', againstRuns: '712/49.1' },
-  { position: 4, team: teams[3], played: 5, won: 3, lost: 2, nr: 0, points: 6, nrr: '+0.21', lastFive: ['W', 'W', 'L', 'W', 'L'], forRuns: '810/50.0', againstRuns: '795/50.0' },
-  { position: 5, team: teams[4], played: 5, won: 3, lost: 2, nr: 0, points: 6, nrr: '-0.15', lastFive: ['L', 'W', 'L', 'W', 'W'], forRuns: '720/47.4', againstRuns: '730/50.0' },
-  { position: 6, team: teams[5], played: 5, won: 2, lost: 3, nr: 0, points: 4, nrr: '-0.34', lastFive: ['W', 'L', 'W', 'L', 'L'], forRuns: '695/50.0', againstRuns: '715/48.4' },
-  { position: 7, team: teams[6], played: 5, won: 2, lost: 3, nr: 0, points: 4, nrr: '-0.52', lastFive: ['L', 'L', 'W', 'W', 'L'], forRuns: '710/50.0', againstRuns: '740/49.2' },
-  { position: 8, team: teams[7], played: 5, won: 1, lost: 4, nr: 0, points: 2, nrr: '-1.18', lastFive: ['L', 'L', 'L', 'L', 'W'], forRuns: '650/49.1', againstRuns: '735/50.0' },
-  { position: 9, team: teams[8], played: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00', lastFive: [], forRuns: '0/0', againstRuns: '0/0' },
-  { position: 10, team: teams[9], played: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00', lastFive: [], forRuns: '0/0', againstRuns: '0/0' },
-  { position: 11, team: teams[10], played: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00', lastFive: [], forRuns: '0/0', againstRuns: '0/0' },
-  { position: 12, team: teams[11], played: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00', lastFive: [], forRuns: '0/0', againstRuns: '0/0' },
-  { position: 13, team: teams[12], played: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00', lastFive: [], forRuns: '0/0', againstRuns: '0/0' },
-  { position: 14, team: teams[13], played: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00', lastFive: [], forRuns: '0/0', againstRuns: '0/0' },
-  { position: 15, team: teams[14], played: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00', lastFive: [], forRuns: '0/0', againstRuns: '0/0' },
-  { position: 16, team: teams[15], played: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00', lastFive: [], forRuns: '0/0', againstRuns: '0/0' },
-  { position: 17, team: teams[16], played: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00', lastFive: [], forRuns: '0/0', againstRuns: '0/0' },
-  { position: 18, team: teams[17], played: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00', lastFive: [], forRuns: '0/0', againstRuns: '0/0' },
-  { position: 19, team: teams[18], played: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00', lastFive: [], forRuns: '0/0', againstRuns: '0/0' },
-  { position: 20, team: teams[19], played: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00', lastFive: [], forRuns: '0/0', againstRuns: '0/0' },
-  { position: 21, team: teams[20], played: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00', lastFive: [], forRuns: '0/0', againstRuns: '0/0' },
-  { position: 22, team: teams[21], played: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00', lastFive: [], forRuns: '0/0', againstRuns: '0/0' },
-  { position: 23, team: teams[22], played: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00', lastFive: [], forRuns: '0/0', againstRuns: '0/0' },
-  { position: 24, team: teams[23], played: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00', lastFive: [], forRuns: '0/0', againstRuns: '0/0' },
-  { position: 25, team: teams[24], played: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00', lastFive: [], forRuns: '0/0', againstRuns: '0/0' },
-  { position: 26, team: teams[25], played: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00', lastFive: [], forRuns: '0/0', againstRuns: '0/0' },
-  { position: 27, team: teams[26], played: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00', lastFive: [], forRuns: '0/0', againstRuns: '0/0' },
-  { position: 28, team: teams[27], played: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00', lastFive: [], forRuns: '0/0', againstRuns: '0/0' },
-  { position: 29, team: teams[28], played: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00', lastFive: [], forRuns: '0/0', againstRuns: '0/0' },
-  { position: 30, team: teams[29], played: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00', lastFive: [], forRuns: '0/0', againstRuns: '0/0' },
-  { position: 31, team: teams[30], played: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00', lastFive: [], forRuns: '0/0', againstRuns: '0/0' },
-  { position: 32, team: teams[31], played: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00', lastFive: [], forRuns: '0/0', againstRuns: '0/0' }
+  { position: 1, team: { name: "PUNJAB", logo: "🏏" }, played: 7, won: 7, lost: 0, nr: 0, nrr: "+1.946", forRuns: "606/61.83", againstRuns: "495/63.00", points: 14, lastFive: ["W", "W", "W", "W", "W"] },
+  { position: 2, team: { name: "RAJASTHAN", logo: "🏏" }, played: 6, won: 5, lost: 1, nr: 0, nrr: "+1.435", forRuns: "510/53.33", againstRuns: "419/51.50", points: 10, lastFive: ["W", "W", "W", "W", "L"] },
+  { position: 3, team: { name: "UTTAR PRADESH BLUE", logo: "🏏" }, played: 7, won: 5, lost: 2, nr: 0, nrr: "+1.356", forRuns: "648/63.00", againstRuns: "560/62.67", points: 10, lastFive: ["W", "W", "L", "W", "L"] },
+  { position: 4, team: { name: "UTTARAKHAND", logo: "🏏" }, played: 6, won: 4, lost: 2, nr: 0, nrr: "+2.314", forRuns: "485/48.33", againstRuns: "417/54.00", points: 8, lastFive: ["W", "L", "W", "W", "L"] },
+  { position: 5, team: { name: "CHANDIGARH", logo: "🏏" }, played: 4, won: 3, lost: 1, nr: 0, nrr: "+3.883", forRuns: "359/29.33", againstRuns: "298/35.67", points: 6, lastFive: ["W", "W", "W", "L"] },
+  { position: 6, team: { name: "MAHARASHTRA", logo: "🏏" }, played: 5, won: 3, lost: 2, nr: 0, nrr: "+2.073", forRuns: "375/40.00", againstRuns: "375/51.33", points: 6, lastFive: ["W", "L", "W", "L", "W"] },
+  { position: 7, team: { name: "KARNATAKA", logo: "🏏" }, played: 5, won: 3, lost: 2, nr: 0, nrr: "+1.793", forRuns: "397/38.00", againstRuns: "384/44.33", points: 6, lastFive: ["L", "W", "W", "L", "W"] },
+  { position: 8, team: { name: "GUJARAT", logo: "🏏" }, played: 5, won: 3, lost: 2, nr: 0, nrr: "+0.344", forRuns: "487/52.17", againstRuns: "339/37.67", points: 6, lastFive: ["W", "L", "L", "W", "W"] },
+  { position: 9, team: { name: "HARYANA", logo: "🏏" }, played: 4, won: 3, lost: 1, nr: 0, nrr: "+0.252", forRuns: "295/33.17", againstRuns: "278/32.17", points: 6, lastFive: ["W", "W", "L", "W"] },
+  { position: 10, team: { name: "MUMBAI", logo: "🏏" }, played: 4, won: 3, lost: 1, nr: 0, nrr: "+0.013", forRuns: "323/35.33", againstRuns: "353/36.00", points: 6, lastFive: ["L", "W", "W", "W"] },
+  { position: 11, team: { name: "ANDHRA PRADESH", logo: "🏏" }, played: 5, won: 3, lost: 2, nr: 0, nrr: "-0.273", forRuns: "374/40.00", againstRuns: "433/45.00", points: 6, lastFive: ["W", "L", "W", "L", "W"] },
+  { position: 12, team: { name: "TELANGANA", logo: "🏏" }, played: 5, won: 3, lost: 2, nr: 0, nrr: "-0.884", forRuns: "414/43.67", againstRuns: "466/45.00", points: 6, lastFive: ["L", "W", "L", "W", "W"] },
+  { position: 13, team: { name: "MADHYA PRADESH", logo: "🏏" }, played: 4, won: 2, lost: 2, nr: 0, nrr: "+2.423", forRuns: "347/35.67", againstRuns: "257/35.17", points: 4, lastFive: ["W", "L", "W", "L"] },
+  { position: 14, team: { name: "SOUTH ZONE", logo: "🏏" }, played: 3, won: 2, lost: 1, nr: 0, nrr: "+0.962", forRuns: "240/27.00", againstRuns: "214/27.00", points: 4, lastFive: ["W", "L", "W"] },
+  { position: 15, team: { name: "ODISHA", logo: "🏏" }, played: 5, won: 2, lost: 3, nr: 0, nrr: "-0.274", forRuns: "405/44.83", againstRuns: "400/43.00", points: 4, lastFive: ["L", "W", "L", "W", "L"] },
+  { position: 16, team: { name: "WEST BENGAL", logo: "🏏" }, played: 4, won: 1, lost: 3, nr: 0, nrr: "+0.623", forRuns: "313/36.00", againstRuns: "284/35.17", points: 2, lastFive: ["L", "L", "W", "L"] },
+  { position: 17, team: { name: "KERALA", logo: "🏏" }, played: 3, won: 1, lost: 2, nr: 0, nrr: "-0.252", forRuns: "208/26.00", againstRuns: "209/25.33", points: 2, lastFive: ["L", "W", "L"] },
+  { position: 18, team: { name: "GOA", logo: "🏏" }, played: 3, won: 1, lost: 2, nr: 0, nrr: "-0.352", forRuns: "242/26.83", againstRuns: "253/27.00", points: 2, lastFive: ["W", "L", "L"] },
+  { position: 19, team: { name: "ANDAMAN", logo: "🏏" }, played: 3, won: 1, lost: 2, nr: 0, nrr: "-0.412", forRuns: "241/27.00", againstRuns: "252/27.00", points: 2, lastFive: ["L", "L", "W"] },
+  { position: 20, team: { name: "BENGALURU", logo: "🏏" }, played: 3, won: 1, lost: 2, nr: 0, nrr: "-0.592", forRuns: "245/27.00", againstRuns: "261/27.00", points: 2, lastFive: ["L", "W", "L"] },
+  { position: 21, team: { name: "DELHI", logo: "🏏" }, played: 4, won: 1, lost: 3, nr: 0, nrr: "-0.612", forRuns: "266/34.50", againstRuns: "287/34.50", points: 2, lastFive: ["L", "L", "L", "W"] },
+  { position: 22, team: { name: "JHARKHAND", logo: "🏏" }, played: 3, won: 1, lost: 2, nr: 0, nrr: "-0.632", forRuns: "232/27.00", againstRuns: "249/27.00", points: 2, lastFive: ["L", "W", "L"] },
+  { position: 23, team: { name: "BIHAR", logo: "🏏" }, played: 3, won: 1, lost: 2, nr: 0, nrr: "-0.852", forRuns: "248/27.00", againstRuns: "261/26.00", points: 2, lastFive: ["W", "L", "L"] },
+  { position: 24, team: { name: "NORTH ZONE", logo: "🏏" }, played: 3, won: 1, lost: 2, nr: 0, nrr: "-1.192", forRuns: "235/26.00", againstRuns: "237/23.17", points: 2, lastFive: ["L", "L", "W"] },
+  { position: 25, team: { name: "UTTAR PRADESH RED", logo: "🏏" }, played: 4, won: 1, lost: 3, nr: 0, nrr: "-1.373", forRuns: "304/35.33", againstRuns: "359/36.00", points: 2, lastFive: ["L", "L", "W", "L"] },
+  { position: 26, team: { name: "JAMMU AND KASHMIR", logo: "🏏" }, played: 3, won: 1, lost: 2, nr: 0, nrr: "-1.662", forRuns: "207/25.50", againstRuns: "251/25.67", points: 2, lastFive: ["L", "W", "L"] },
+  { position: 27, team: { name: "CHHATTISGARH", logo: "🏏" }, played: 3, won: 1, lost: 2, nr: 0, nrr: "-2.231", forRuns: "166/23.50", againstRuns: "251/27.00", points: 2, lastFive: ["L", "L", "W"] },
+  { position: 28, team: { name: "ASSAM", logo: "🏏" }, played: 3, won: 1, lost: 2, nr: 0, nrr: "-2.391", forRuns: "183/26.50", againstRuns: "251/27.00", points: 2, lastFive: ["W", "L", "L"] },
+  { position: 29, team: { name: "HIMACHAL PRADESH", logo: "🏏" }, played: 3, won: 0, lost: 3, nr: 0, nrr: "-1.692", forRuns: "238/26.67", againstRuns: "276/26.00", points: 0, lastFive: ["L", "L", "L"] },
+  { position: 30, team: { name: "NORTH EAST", logo: "🏏" }, played: 3, won: 0, lost: 3, nr: 0, nrr: "-5.231", forRuns: "184/27.00", againstRuns: "249/20.67", points: 0, lastFive: ["L", "L", "L"] },
+  { position: 31, team: { name: "LAKSHADWEEP", logo: "🏏" }, played: 3, won: 0, lost: 3, nr: 0, nrr: "-5.611", forRuns: "149/26.67", againstRuns: "181/16.17", points: 0, lastFive: ["L", "L", "L"] },
+  { position: 32, team: { name: "TAMIL NADU", logo: "🏏" }, played: 3, won: 0, lost: 3, nr: 0, nrr: "-5.741", forRuns: "194/27.00", againstRuns: "349/27.00", points: 0, lastFive: ["L", "L", "L"] }
 ];
 
 // 6. MASTER STATISTICAL INDICATORS

@@ -11,9 +11,12 @@ import AboutPage from './pages/AboutPage.jsx';
 import PlayerProfilePage from './pages/PlayerProfilePage.jsx';
 import PartnerPage from "./pages/PartnerPage.jsx";
 import RegistrationModal from './components/RegistrationModal.jsx';
+import PrivacyPolicyPage from './pages/PrivacyPolicyPage.jsx';
+import TermsOfServicePage from './pages/TermsOfServicePage.jsx';
 
 import AllRounderRegistration from './pages/AllRounderRegistration.jsx';
 import SpecialistRegistration from './pages/SpecialistRegistration.jsx';
+
 function App() {
     const [isRegisterOpen, setIsRegisterOpen] = useState(false);
 
@@ -44,6 +47,11 @@ function App() {
                 <Route path="/register-allrounder" element={<AllRounderRegistration />} />
                 <Route path="/register-specialist" element={<SpecialistRegistration />} />
                 <Route path="/partner" element={<PartnerPage />} />
+                
+                {/* Wired up the Legal Page Links here */}
+                <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
+                <Route path="/terms-of-service" element={<TermsOfServicePage />} />
+                
                 <Route path="*" element={
                     <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center">
                         <div className="text-center">
