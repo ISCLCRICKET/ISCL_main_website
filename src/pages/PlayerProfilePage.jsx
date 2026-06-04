@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, BarChart3, History } from 'lucide-react';
 import Header from '@/components/Header.jsx';
 import Footer from '@/components/Footer.jsx';
 import MarqueeScoreTicker from '@/components/MarqueeScoreTicker.jsx';
@@ -17,11 +17,11 @@ const PlayerProfilePage = () => {
       <>
         <MarqueeScoreTicker />
         <Header />
-        <main className="min-h-screen bg-[#0A0A0A] py-20">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <p className="text-white/60 text-lg">Player not found</p>
-            <Link to="/players" className="text-[#2563EB] hover:text-[#2563EB]/80 mt-4 inline-block">
-              Back to players
+        <main className="min-h-screen bg-[#060606] flex items-center justify-center">
+          <div className="text-center max-w-sm px-4">
+            <p className="text-white/40 text-sm font-bold uppercase tracking-wider">Player identity data missing</p>
+            <Link to="/players" className="text-[#FF6B1A] font-bold text-xs uppercase tracking-widest mt-4 inline-block hover:underline">
+              &larr; Back to stats center
             </Link>
           </div>
         </main>
@@ -33,155 +33,137 @@ const PlayerProfilePage = () => {
   return (
     <>
       <Helmet>
-        <title>{`${player.name} - ISCL`}</title>
+        <title>{`${player.name} - Career Stats - ISCL`}</title>
         <meta name="description" content={`View ${player.name}'s complete profile, career stats, and recent performances in ISCL.`} />
       </Helmet>
 
       <MarqueeScoreTicker />
       <Header />
 
-      <main className="min-h-screen bg-[#0A0A0A]">
-        {/* Player Banner */}
+      <main className="min-h-screen bg-[#060606] text-white pt-28 pb-20">
+        
+        {/* Dynamic Sport Profile Header Strip */}
         <section 
-          className="relative h-80 flex items-end"
+          className="relative py-12 border-b border-white/[0.06]"
           style={{
-            background: `linear-gradient(135deg, ${player.team.color}40 0%, ${player.team.color}20 100%)`
+            background: `linear-gradient(180deg, ${player.team.color || '#2563EB'}15 0%, transparent 100%)`
           }}
         >
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-[#0A0A0A]/50 to-transparent"></div>
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-8 w-full">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <Link 
               to="/players"
-              className="inline-flex items-center gap-2 text-white/80 hover:text-white mb-6 transition-colors duration-200"
+              className="inline-flex items-center gap-2 text-xs font-black uppercase tracking-widest text-white/50 hover:text-white mb-6 transition-colors"
             >
-              <ArrowLeft size={20} />
-              Back to players
+              <ArrowLeft size={14} /> Back to stats center
             </Link>
-            <div className="flex items-end gap-6">
-              <div className="w-32 h-32 rounded-2xl overflow-hidden bg-gradient-to-br from-white/10 to-white/5 border-4" style={{ borderColor: player.team.color }}>
-                <img 
-                  src={player.photo} 
-                  alt={player.name}
-                  className="w-full h-full object-cover"
-                  loading="lazy"
-                />
-              </div>
-              <div className="flex-1 pb-2">
-                <h1 className="text-4xl md:text-5xl font-bold text-white mb-2" style={{ fontFamily: 'Rajdhani, sans-serif' }}>
-                  {player.name}
-                </h1>
-                <div className="flex items-center gap-4 text-white/80">
-                  <span className="flex items-center gap-2">
-                    <span className="text-2xl">{player.team.logo}</span>
-                    {player.team.name}
-                  </span>
-                  <span>•</span>
-                  <span>{player.role}</span>
+
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+              <div className="flex items-center gap-4">
+                {/* Visual Typography Avatar Badge */}
+                <div 
+                  className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl font-black border shadow-xl"
+                  style={{ borderColor: player.team.color || '#fff', backgroundColor: '#0d0d0d' }}
+                >
+                  {player.team.logo || '🏏'}
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded bg-white/5 border border-white/10 text-white/70">
+                      {player.role}
+                    </span>
+                    <span className="text-xs text-white/40 font-bold uppercase tracking-wider">{player.team.name}</span>
+                  </div>
+                  <h1 className="text-3xl md:text-5xl font-black uppercase tracking-tight text-white mt-1" style={{ fontFamily: 'Rajdhani, sans-serif' }}>
+                    {player.name}
+                  </h1>
                 </div>
               </div>
             </div>
           </div>
         </section>
 
-        {/* Career Stats */}
-        <section className="py-12 bg-[#0A0A0A]">
+        {/* Tailored Career Stats Board */}
+        <section className="py-12">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.4 }}
             >
-              <h2 className="text-2xl font-bold text-white mb-6" style={{ fontFamily: 'Rajdhani, sans-serif' }}>
-                Career stats
-              </h2>
-              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
-                <div className="p-4 rounded-xl bg-white/5 border border-white/[0.08] text-center">
-                  <p className="text-2xl font-bold text-white" style={{ fontFamily: 'Oswald, sans-serif' }}>
-                    {player.stats.matches}
-                  </p>
-                  <p className="text-xs text-white/50 mt-1">Matches</p>
+              <div className="flex items-center gap-2 mb-6 text-white/40 uppercase font-bold text-xs tracking-widest">
+                <BarChart3 size={14} /> Comprehensive Metrics
+              </div>
+
+              {/* Explicitly filtered stats cards layout */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+                <div className="p-5 rounded-2xl bg-[#0d0d0e] border border-white/[0.05] shadow-lg">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-white/40">Matches</p>
+                  <p className="text-3xl font-black text-white font-mono mt-2">{player.stats.matches}</p>
                 </div>
-                <div className="p-4 rounded-xl bg-white/5 border border-white/[0.08] text-center">
-                  <p className="text-2xl font-bold text-white" style={{ fontFamily: 'Oswald, sans-serif' }}>
-                    {player.stats.runs}
-                  </p>
-                  <p className="text-xs text-white/50 mt-1">Runs</p>
+                
+                <div className="p-5 rounded-2xl bg-[#0d0d0e] border border-white/[0.05] shadow-lg">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-white/40">Runs Scored</p>
+                  <p className="text-3xl font-black text-[#FF6B1A] font-mono mt-2">{player.stats.runs}</p>
                 </div>
-                <div className="p-4 rounded-xl bg-white/5 border border-white/[0.08] text-center">
-                  <p className="text-2xl font-bold text-white" style={{ fontFamily: 'Oswald, sans-serif' }}>
-                    {player.stats.average}
-                  </p>
-                  <p className="text-xs text-white/50 mt-1">Average</p>
+
+                <div className="p-5 rounded-2xl bg-[#0d0d0e] border border-white/[0.05] shadow-lg">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-white/40">Strike Rate</p>
+                  <p className="text-3xl font-black text-white font-mono mt-2">{player.stats.strikeRate}</p>
                 </div>
-                <div className="p-4 rounded-xl bg-white/5 border border-white/[0.08] text-center">
-                  <p className="text-2xl font-bold text-white" style={{ fontFamily: 'Oswald, sans-serif' }}>
-                    {player.stats.strikeRate}
-                  </p>
-                  <p className="text-xs text-white/50 mt-1">Strike rate</p>
+
+                <div className="p-5 rounded-2xl bg-[#0d0d0e] border border-white/[0.05] shadow-lg">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-white/40">Half Centuries (50s)</p>
+                  <p className="text-3xl font-black text-white font-mono mt-2">{player.stats.fifties}</p>
                 </div>
-                <div className="p-4 rounded-xl bg-white/5 border border-white/[0.08] text-center">
-                  <p className="text-2xl font-bold text-white" style={{ fontFamily: 'Oswald, sans-serif' }}>
-                    {player.stats.fifties}
-                  </p>
-                  <p className="text-xs text-white/50 mt-1">50s</p>
+
+                <div className="p-5 rounded-2xl bg-[#0d0d0e] border border-white/[0.05] shadow-lg">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-white/40">Wickets Taken</p>
+                  <p className="text-3xl font-black text-[#8B5CF6] font-mono mt-2">{player.stats.wickets}</p>
                 </div>
-                <div className="p-4 rounded-xl bg-white/5 border border-white/[0.08] text-center">
-                  <p className="text-2xl font-bold text-white" style={{ fontFamily: 'Oswald, sans-serif' }}>
-                    {player.stats.hundreds}
-                  </p>
-                  <p className="text-xs text-white/50 mt-1">100s</p>
-                </div>
-                <div className="p-4 rounded-xl bg-white/5 border border-white/[0.08] text-center">
-                  <p className="text-2xl font-bold text-white" style={{ fontFamily: 'Oswald, sans-serif' }}>
-                    {player.stats.wickets}
-                  </p>
-                  <p className="text-xs text-white/50 mt-1">Wickets</p>
-                </div>
-                <div className="p-4 rounded-xl bg-white/5 border border-white/[0.08] text-center">
-                  <p className="text-2xl font-bold text-white" style={{ fontFamily: 'Oswald, sans-serif' }}>
-                    {player.stats.economy}
-                  </p>
-                  <p className="text-xs text-white/50 mt-1">Economy</p>
+
+                <div className="p-5 rounded-2xl bg-[#0d0d0e] border border-white/[0.05] shadow-lg col-span-2 sm:col-span-1">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-white/40">Economy Rate</p>
+                  <p className="text-3xl font-black text-white font-mono mt-2">{player.stats.economy}</p>
                 </div>
               </div>
             </motion.div>
           </div>
         </section>
 
-        {/* Recent Performances */}
-        <section className="py-12 bg-gradient-to-b from-[#0A0A0A] to-[#141414]">
+        {/* Recent Performance Match History Grid */}
+        <section className="py-8">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.2 }}
             >
-              <h2 className="text-2xl font-bold text-white mb-6" style={{ fontFamily: 'Rajdhani, sans-serif' }}>
-                Recent performances
-              </h2>
-              <div className="bg-[#141414]/80 backdrop-blur-md border border-white/[0.08] rounded-2xl overflow-hidden">
+              <div className="flex items-center gap-2 mb-6 text-white/40 uppercase font-bold text-xs tracking-widest">
+                <History size={14} /> Match Form History
+              </div>
+
+              <div className="bg-[#0c0c0d] border border-white/[0.06] rounded-2xl overflow-hidden shadow-2xl">
                 <div className="overflow-x-auto">
-                  <table className="w-full">
+                  <table className="w-full text-left border-collapse">
                     <thead>
-                      <tr className="border-b border-white/[0.08]">
-                        <th className="px-4 py-3 text-left text-sm font-semibold text-white/80">Match</th>
-                        <th className="px-4 py-3 text-center text-sm font-semibold text-white/80">Runs</th>
-                        <th className="px-4 py-3 text-center text-sm font-semibold text-white/80">Wickets</th>
-                        <th className="px-4 py-3 text-center text-sm font-semibold text-white/80">Result</th>
+                      <tr className="border-b border-white/[0.06] bg-white/[0.01]">
+                        <th className="px-6 py-4 text-xs font-black text-white/40 uppercase tracking-widest">Opponent Matchup</th>
+                        <th className="px-6 py-4 text-center text-xs font-black text-white/40 uppercase tracking-widest">Runs</th>
+                        <th className="px-6 py-4 text-center text-xs font-black text-white/40 uppercase tracking-widest">Wickets</th>
+                        <th className="px-6 py-4 text-center text-xs font-black text-white/40 uppercase tracking-widest">Outcome</th>
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody className="divide-y divide-white/[0.04]">
                       {player.recentPerformances.map((perf, index) => (
-                        <tr key={index} className="border-b border-white/[0.08] hover:bg-white/5 transition-colors duration-200">
-                          <td className="px-4 py-4 text-sm text-white">{perf.match}</td>
-                          <td className="px-4 py-4 text-center text-sm font-bold text-white">{perf.runs}</td>
-                          <td className="px-4 py-4 text-center text-sm font-bold text-white">{perf.wickets}</td>
-                          <td className="px-4 py-4 text-center">
-                            <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                        <tr key={index} className="hover:bg-white/[0.02] transition-colors group">
+                          <td className="px-6 py-4 text-sm font-extrabold uppercase text-white/90 tracking-wide">{perf.match}</td>
+                          <td className="px-6 py-4 text-center text-sm font-bold text-white font-mono">{perf.runs}</td>
+                          <td className="px-6 py-4 text-center text-sm font-bold text-white font-mono">{perf.wickets}</td>
+                          <td className="px-6 py-4 text-center">
+                            <span className={`inline-block px-3 py-1 rounded text-[10px] font-black uppercase tracking-widest border ${
                               perf.result === 'Won' 
-                                ? 'bg-[#AACC00]/20 text-[#AACC00] border border-[#AACC00]/30'
-                                : 'bg-[#E91E8C]/20 text-[#E91E8C] border border-[#E91E8C]/30'
+                                ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20'
+                                : 'bg-rose-500/10 text-rose-400 border-rose-500/20'
                             }`}>
                               {perf.result}
                             </span>

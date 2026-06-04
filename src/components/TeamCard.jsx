@@ -1,68 +1,79 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import GlassmorphismCard from './GlassmorphismCard.jsx';
 
 const TeamCard = ({ team }) => {
   return (
     <GlassmorphismCard className="h-full">
-      <div className="p-6 space-y-6">
-        {/* Team Logo */}
-        <div className="flex justify-center">
-          <div 
-            className="w-24 h-24 rounded-full flex items-center justify-center text-5xl border-4 transition-transform duration-200 group-hover:scale-110"
-            style={{ borderColor: team.color }}
-          >
-            {team.logo}
+      {/* Enforce flex-col and justify-between so card components line up symmetrically */}
+      <div className="p-6 flex flex-col justify-between h-full min-h-[420px] space-y-4">
+        
+        {/* Top Branding Section */}
+        <div className="space-y-4 flex-shrink-0">
+          {/* Team Logo */}
+          <div className="flex justify-center">
+            <div 
+              className="w-24 h-24 rounded-full flex items-center justify-center text-5xl border-4 transition-transform duration-200 group-hover:scale-110 shadow-lg"
+              style={{ borderColor: team.color }}
+            >
+              {team.logo}
+            </div>
+          </div>
+
+          {/* Team Meta & Name with locked vertical alignment container */}
+          <div className="text-center space-y-1">
+            {/* Min-height container forces single and double line text fields to scale identically */}
+            <div className="min-h-[56px] flex items-center justify-center">
+              <h3 className="text-xl font-bold text-white uppercase tracking-tight leading-tight" style={{ fontFamily: 'Rajdhani, sans-serif' }}>
+                {team.name}
+              </h3>
+            </div>
+            <p className="text-xs font-semibold tracking-wider text-white/40 uppercase">{team.city}</p>
           </div>
         </div>
 
-        {/* Team Info */}
-        <div className="text-center space-y-2">
-          <h3 className="text-xl font-bold text-white" style={{ fontFamily: 'Rajdhani, sans-serif' }}>
-            {team.name}
-          </h3>
-          <p className="text-sm text-white/60">{team.city}</p>
-          <div className="pt-2">
-            <span className="text-xs text-white/50">Captain: </span>
-            <span className="text-sm font-semibold text-white">{team.captain}</span>
-          </div>
+        {/* Middle Captain Block */}
+        <div className="text-center bg-white/[0.02] border border-white/[0.04] py-2 rounded-lg flex-grow flex items-center justify-center">
+          <p className="text-xs text-white/50">
+            Captain: <span className="text-sm font-bold text-white uppercase ml-1">{team.captain}</span>
+          </p>
         </div>
 
-        {/* Team Stats */}
-        <div className="grid grid-cols-3 gap-4 pt-4 border-t border-white/[0.08]">
-          <div className="text-center">
-            <p className="text-2xl font-bold text-white" style={{ fontFamily: 'Oswald, sans-serif' }}>
-              {team.stats.won}
-            </p>
-            <p className="text-xs text-white/50">Won</p>
+        {/* Bottom Symmetrical Stats Block */}
+        <div className="space-y-4 flex-shrink-0">
+          <div className="grid grid-cols-3 gap-2 pt-4 border-t border-white/[0.08]">
+            <div className="text-center">
+              <p className="text-2xl font-black text-white font-mono" style={{ fontFamily: 'Oswald, sans-serif' }}>
+                {team.stats.won}
+              </p>
+              <p className="text-[10px] uppercase font-bold tracking-wider text-white/40">Won</p>
+            </div>
+            <div className="text-center">
+              <p className="text-2xl font-black text-white font-mono" style={{ fontFamily: 'Oswald, sans-serif' }}>
+                {team.stats.lost}
+              </p>
+              <p className="text-[10px] uppercase font-bold tracking-wider text-white/40">Lost</p>
+            </div>
+            <div className="text-center">
+              <p className="text-2xl font-black font-mono" style={{ color: team.color, fontFamily: 'Oswald, sans-serif' }}>
+                {team.stats.points}
+              </p>
+              <p className="text-[10px] uppercase font-bold tracking-wider text-white/40">Points</p>
+            </div>
           </div>
-          <div className="text-center">
-            <p className="text-2xl font-bold text-white" style={{ fontFamily: 'Oswald, sans-serif' }}>
-              {team.stats.lost}
-            </p>
-            <p className="text-xs text-white/50">Lost</p>
-          </div>
-          <div className="text-center">
-            <p className="text-2xl font-bold text-white" style={{ fontFamily: 'Oswald, sans-serif' }}>
-              {team.stats.points}
-            </p>
-            <p className="text-xs text-white/50">Points</p>
-          </div>
-        </div>
 
-        {/* View Squad Button */}
-        <Link to={`/teams/${team.id}`}>
+          {/* Action Trigger */}
           <button 
-            className="w-full px-4 py-3 rounded-lg font-semibold text-sm transition-all duration-200 active:scale-[0.98] border-2"
+            className="w-full px-4 py-3 rounded-xl font-bold uppercase tracking-wider text-xs transition-all duration-200 active:scale-[0.98] border-2"
             style={{ 
               borderColor: team.color,
               color: team.color,
-              backgroundColor: `${team.color}10`
+              backgroundColor: `${team.color}12`
             }}
           >
-            View squad
+            View Full Squad
           </button>
-        </Link>
+        </div>
+
       </div>
     </GlassmorphismCard>
   );
