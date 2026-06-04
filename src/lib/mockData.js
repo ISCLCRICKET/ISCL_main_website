@@ -1,41 +1,7 @@
 // Mock data service for ISCL website
 
-// 1. MASTER TEAMS CONFIGURATION (1-3)
+// 1. MASTER TEAMS CONFIGURATION (1-32)
 export const teams = [
-<<<<<<< HEAD
-  { id: 'gujarat', name: 'Gujarat', city: 'Gujarat', logo: '🏏', color: '#2563EB', stats: { matches: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00' } },
-  { id: 'maharashtra', name: 'Maharashtra', city: 'Maharashtra', logo: '🏏', color: '#E91E8C', stats: { matches: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00' } },
-  { id: 'rajasthan', name: 'Rajasthan', city: 'Rajasthan', logo: '🏏', color: '#FF6B1A', stats: { matches: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00' } },
-  { id: 'uttar-pradesh-red', name: 'Uttar Pradesh Red', city: 'Uttar Pradesh', logo: '🏏', color: '#AACC00', stats: { matches: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00' } },
-  { id: 'delhi', name: 'Delhi', city: 'Delhi', logo: '⚡', color: '#8B5CF6', stats: { matches: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00' } },
-  { id: 'andaman', name: 'Andaman', city: 'Andaman', logo: '🏏', color: '#F59E0B', stats: { matches: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00' } },
-  { id: 'andhra-pradesh', name: 'Andhra Pradesh', city: 'Andhra Pradesh', logo: '🏏', color: '#10B981', stats: { matches: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00' } },
-  { id: 'bihar', name: 'Bihar', city: 'Bihar', logo: '🏏', color: '#EC4899', stats: { matches: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00' } },
-  { id: 'chandigarh', name: 'Chandigarh', city: 'Chandigarh', logo: '🏏', color: '#2563EB', stats: { matches: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00' } },
-  { id: 'tamil-nadu', name: 'Tamil Nadu', city: 'Tamil Nadu', logo: '🏏', color: '#E91E8C', stats: { matches: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00' } },
-  { id: 'lakshadweep', name: 'Lakshadweep', city: 'Lakshadweep', logo: '🏏', color: '#FF6B1A', stats: { matches: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00' } },
-  { id: 'north-east', name: 'North East', city: 'North East', logo: '🏏', color: '#AACC00', stats: { matches: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00' } },
-  { id: 'himachal-pradesh', name: 'Himachal Pradesh', city: 'Himachal Pradesh', logo: '🏏', color: '#8B5CF6', stats: { matches: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00' } },
-  { id: 'assam', name: 'Assam', city: 'Assam', logo: '🏏', color: '#F59E0B', stats: { matches: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00' } },
-  { id: 'jharkhand', name: 'Jharkhand', city: 'Jharkhand', logo: '🏏', color: '#10B981', stats: { matches: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00' } },
-  { id: 'goa', name: 'Goa', city: 'Goa', logo: '🏏', color: '#EC4899', stats: { matches: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00' } },
-  { id: 'odisha', name: 'Odisha', city: 'Odisha', logo: '🏏', color: '#2563EB', stats: { matches: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00' } },
-  { id: 'karnataka', name: 'Karnataka', city: 'Karnataka', logo: '🏏', color: '#E91E8C', stats: { matches: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00' } },
-  { id: 'kerala', name: 'Kerala', city: 'Kerala', logo: '🏏', color: '#FF6B1A', stats: { matches: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00' } },
-  { id: 'uttar-pradesh-blue', name: 'Uttar Pradesh Blue', city: 'Uttar Pradesh', logo: '🏏', color: '#AACC00', stats: { matches: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00' } },
-  { id: 'west-bengal', name: 'West Bengal', city: 'West Bengal', logo: '🏏', color: '#8B5CF6', stats: { matches: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00' } },
-  { id: 'madhya-pradesh', name: 'Madhya Pradesh', city: 'Madhya Pradesh', logo: 'F59E0B', stats: { matches: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00' } },
-  { id: 'north-zone', name: 'North Zone', city: 'North Zone', logo: '🏏', color: '#10B981', stats: { matches: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00' } },
-  { id: 'jammu-and-kashmir', name: 'Jammu and Kashmir', city: 'Jammu and Kashmir', logo: '🏏', color: '#EC4899', stats: { matches: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00' } },
-  { id: 'haryana', name: 'Haryana', city: 'Haryana', logo: '🏏', color: '#2563EB', stats: { matches: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00' } },
-  { id: 'punjab', name: 'Punjab', city: 'Punjab', logo: '🏏', color: '#E91E8C', stats: { matches: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00' } },
-  { id: 'chhattisgarh', name: 'Chhattisgarh', city: 'Chhattisgarh', logo: '🏏', color: '#FF6B1A', stats: { matches: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00' } },
-  { id: 'south-zone', name: 'South Zone', city: 'South Zone', logo: '🏏', color: '#AACC00', stats: { matches: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00' } },
-  { id: 'uttarakhand', name: 'Uttarakhand', city: 'Uttarakhand', logo: '🏏', color: '#8B5CF6', stats: { matches: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00' } },
-  { id: 'bengaluru', name: 'Bengaluru', city: 'Bengaluru', logo: '🏏', color: '#F59E0B', stats: { matches: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00' } },
-  { id: 'telangana', name: 'Telangana', city: 'Telangana', logo: '🏏', color: '#10B981', stats: { matches: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00' } },
-  { id: 'mumbai', name: 'Mumbai', city: 'Mumbai', logo: '🏏', color: '#EC4899', stats: { matches: 0, won: 0, lost: 0, nr: 0, points: 0, nrr: '0.00' } }
-=======
   {
     id: "gujarat",
     name: "Gujarati Kings",
@@ -117,12 +83,10 @@ export const teams = [
       { id: "r15", name: "Vinaya Kumar", role: "Bowler", jersey: 9, photo: "" }
     ]
   }
->>>>>>> dea6f88d871fdcec138b4883039fdca93f31539e
 ];
 
 export const matches = [
-<<<<<<< HEAD
-  // Knockouts
+  // Knockouts (101-113) & Group Stage (38-1)
   { id: 101, team1: { name: 'UTTAR PRADESH BLUE' }, team2: { name: 'PUNJAB' }, date: '2025-12-21', time: '19:30', venue: 'Kini Cricket Ground', status: 'completed', stage: 'FINAL', score: { team1: '104/6', team2: '108/8' }, summary: 'Punjab won by 2 wickets.', winner: 'PUNJAB' },
   { id: 102, team1: { name: 'PUNJAB' }, team2: { name: 'UTTARAKHAND' }, date: '2025-12-19', time: '16:00', venue: 'Kini Cricket Ground', status: 'completed', stage: 'SEMIFINAL 2', score: { team1: '70/8', team2: '62/7' }, summary: 'Punjab won by 8 runs.', winner: 'PUNJAB' },
   { id: 103, team1: { name: 'UTTAR PRADESH BLUE' }, team2: { name: 'RAJASTHAN' }, date: '2025-12-18', time: '16:00', venue: 'Kini Cricket Ground', status: 'completed', stage: 'SEMIFINAL 1', score: { team1: '82/7', team2: '77/8' }, summary: 'UP Blue won by 5 runs.', winner: 'UTTAR PRADESH BLUE' },
@@ -136,7 +100,6 @@ export const matches = [
   { id: 111, team1: { name: 'CHANDIGARH' }, team2: { name: 'UTTAR PRADESH BLUE' }, date: '2025-12-08', time: '11:00', venue: 'Kini Cricket Ground', status: 'completed', stage: 'SUPER 16 M-3', score: { team1: '82/3', team2: '95/7' }, summary: 'Kings UP Blue won by 13 runs.', winner: 'UTTAR PRADESH BLUE' },
   { id: 112, team1: { name: 'UTTARAKHAND' }, team2: { name: 'MAHARASHTRA' }, date: '2025-12-04', time: '17:00', venue: 'Kini Cricket Ground', status: 'completed', stage: 'SUPER 16 M-2', score: { team1: '55/1', team2: '54/8' }, summary: 'Uttara Raptors won by 9 wickets.', winner: 'UTTARAKHAND' },
   { id: 113, team1: { name: 'GUJARAT' }, team2: { name: 'TELANGANA' }, date: '2025-12-04', time: '11:00', venue: 'Kini Cricket Ground', status: 'completed', stage: 'SUPER 16 M-1', score: { team1: '78/7', team2: '79/4' }, summary: 'Telangana Singhams won by 6 wickets.', winner: 'TELANGANA' },
-  // Group Stage (Matches 38-1)
   { id: 38, team1: { name: 'HARYANA' }, team2: { name: 'JAMMU AND KASHMIR' }, date: '2025-12-13', time: '10:30', status: 'completed', stage: 'ISCL MATCH 38', score: { team1: '80/3', team2: '78/7' }, summary: 'Phoenix Haryana won by 7 wickets.', winner: 'HARYANA' },
   { id: 37, team1: { name: 'MUMBAI' }, team2: { name: 'HIMACHAL PRADESH' }, date: '2025-12-12', time: '21:00', status: 'completed', stage: 'ISCL MATCH 37', score: { team1: '80/10', team2: '75/4' }, summary: 'Mumbai Royals won by 5 runs.', winner: 'MUMBAI' },
   { id: 36, team1: { name: 'DELHI' }, team2: { name: 'PUNJAB' }, date: '2025-12-12', time: '18:00', status: 'completed', stage: 'ISCL MATCH 36', score: { team1: '69/6', team2: '72/5' }, summary: 'Punjab Golden Fighters won by 5 wickets.', winner: 'PUNJAB' },
@@ -175,39 +138,6 @@ export const matches = [
   { id: 3, team1: { name: 'NORTH EAST' }, team2: { name: 'CHHATTISGARH' }, date: '2025-12-01', time: '15:30', status: 'completed', stage: 'ISCL MATCH 3', score: { team1: '72/4', team2: '73/1' }, summary: 'Raipur Rage won by 9 wickets.', winner: 'CHHATTISGARH' },
   { id: 2, team1: { name: 'BIHAR' }, team2: { name: 'UTTARAKHAND' }, date: '2025-12-01', time: '13:00', status: 'completed', stage: 'ISCL MATCH 2', score: { team1: '69/7', team2: '70/5' }, summary: 'Uttara Raptors won by 5 wickets.', winner: 'UTTARAKHAND' },
   { id: 1, team1: { name: 'GUJARAT' }, team2: { name: 'MAHARASHTRA' }, date: '2025-12-01', time: '10:00', status: 'completed', stage: 'ISCL MATCH 1', score: { team1: '109/5', team2: '42/10' }, summary: 'Gujarati Kings won by 67 runs.', winner: 'GUJARAT' }
-=======
-  {
-    id: 1,
-    team1: teams[0],
-    team2: teams[1],
-    date: '2026-06-05',
-    time: '19:30',
-    venue: 'Wankhede Stadium, Mumbai',
-    status: 'upcoming',
-    countdown: new Date('2026-06-05T19:30:00').getTime()
-  },
-  {
-    id: 2,
-    team1: teams[0],
-    team2: teams[1],
-    date: '2026-06-06',
-    time: '15:00',
-    venue: 'M. Chinnaswamy Stadium, Bangalore',
-    status: 'upcoming',
-    countdown: new Date('2026-06-06T15:00:00').getTime()
-  },
-  {
-    id: 3,
-    team1: teams[2],
-    team2: teams[1],
-    date: '2026-05-28',
-    time: '19:30',
-    venue: 'Eden Gardens, Kolkata',
-    status: 'completed',
-    score: { team1: '142/6', team2: '140/9' },
-    winner: teams[2]
-  }
->>>>>>> dea6f88d871fdcec138b4883039fdca93f31539e
 ];
 
 // 3. PLAYERS ROSTER DIRECTORY
@@ -288,7 +218,7 @@ export const news = [
   }
 ];
 
-// 5. UNIFIED MASTER LEADERBOARD STANDINGS MATRIX (32 Full Teams Loaded)
+// 5. MASTER LEADERBOARD STANDINGS MATRIX
 export const pointsTable = [
   { position: 1, team: { name: "PUNJAB", logo: "🏏" }, played: 7, won: 7, lost: 0, nr: 0, nrr: "+1.946", forRuns: "606/61.83", againstRuns: "495/63.00", points: 14, lastFive: ["W", "W", "W", "W", "W"] },
   { position: 2, team: { name: "RAJASTHAN", logo: "🏏" }, played: 6, won: 5, lost: 1, nr: 0, nrr: "+1.435", forRuns: "510/53.33", againstRuns: "419/51.50", points: 10, lastFive: ["W", "W", "W", "W", "L"] },

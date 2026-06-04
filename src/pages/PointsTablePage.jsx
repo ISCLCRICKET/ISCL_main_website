@@ -8,6 +8,43 @@ import SortableTable from '@/components/SortableTable.jsx';
 import { pointsTable } from '@/lib/mockData.js';
 
 const PointsTablePage = () => {
+  // Expanded logo mapping to support all 32 teams
+  // Ensure these file names match your public/images folder exactly
+  const teamLogos = {
+    "PUNJAB": "/images/PUNJAB.png",
+    "RAJASTHAN": "/images/Rajasthan.png",
+    "UTTAR PRADESH BLUE": "/images/UP_RED.png",
+    "UTTARAKHAND": "/images/UK.jpg",
+    "CHANDIGARH": "/images/CHANDIGARH.png",
+    "MAHARASHTRA": "/images/Maharashtra.png",
+    "KARNATAKA": "/images/KA.png",
+    "GUJARAT": "/images/Gujarati_kings.jpg",
+    "HARYANA": "/images/HARYANA.png",
+    "MUMBAI": "/images/MUMBAI.png",
+    "ANDHRA PRADESH": "/images/AP.png",
+    "TELANGANA": "/images/TELANGANA.jpg",
+    "MADHYA PRADESH": "/images/MADHYA_PRADESH.jpg",
+    "SOUTH ZONE": "/images/SOUTH_ZONE.png",
+    "ODISHA": "/images/OD.png",
+    "WEST BENGAL": "/images/WEST_BENGAL.jpeg",
+    "KERALA": "/images/Kerala.jpg",
+    "GOA": "/images/Goa.png",
+    "ANDAMAN": "/images/Andaman.png",
+    "BENGALURU": "/images/BENGALURU.jpg",
+    "DELHI": "/images/Delhi.jpg",
+    "JHARKHAND": "/images/JHARKHAND.png",
+    "BIHAR": "/images/BIHAR.png",
+    "NORTH ZONE": "/images/NORTH_ZONE.png",
+    "UTTAR PRADESH RED": "/images/UP_RED.png",
+    "JAMMU AND KASHMIR": "/images/JAMMU_AND_KASHMIR.png",
+    "CHHATTISGARH": "/images/CHHATTISGARH.png",
+    "ASSAM": "/images/Assam.png",
+    "HIMACHAL PRADESH": "/images/HIMACHAL_PRADESH.png",
+    "NORTH EAST": "/images/NORTH_EAST.png",
+    "LAKSHADWEEP": "/images/LAKSHADWEEP.png",
+    "TAMIL NADU": "/images/TAMIL_NADU.png"
+  };
+
   const columns = [
     {
       key: 'position',
@@ -29,15 +66,26 @@ const PointsTablePage = () => {
       label: 'Team',
       sortable: false,
       render: (row) => {
-        // Safe guard fallback check if specific teams[index] is undefined
         const teamData = row.team || { name: `Team Slot ${row.position}`, logo: '🏏' };
+        
+        // Find matching logo case-insensitively
+        const normalizedTeamName = Object.keys(teamLogos).find(
+          (key) => key.toLowerCase() === teamData.name?.toLowerCase()
+        );
+        const logoSrc = normalizedTeamName ? teamLogos[normalizedTeamName] : teamData.logo;
+        
         return (
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-white/5 p-1 flex items-center justify-center">
-              {teamData.logo && typeof teamData.logo === 'string' && teamData.logo.startsWith('/') ? (
-                <img src={teamData.logo} alt="" className="max-w-full max-h-full object-contain" onError={(e) => e.target.style.display='none'} />
+            <div className="w-8 h-8 rounded-full bg-white/5 p-0.5 flex items-center justify-center overflow-hidden">
+              {typeof logoSrc === 'string' && (logoSrc.startsWith('/') || logoSrc.endsWith('.jpg') || logoSrc.endsWith('.png') || logoSrc.endsWith('.jpeg')) ? (
+                <img 
+                  src={logoSrc} 
+                  alt={teamData.name} 
+                  className="w-full h-full object-cover" 
+                  onError={(e) => { e.target.style.display = 'none'; }} 
+                />
               ) : (
-                <span className="text-xl">{teamData.logo || '🏏'}</span>
+                <span className="text-xl">{logoSrc || '🏏'}</span>
               )}
             </div>
             <span className="font-bold text-white/90">{teamData.name}</span>
@@ -116,21 +164,11 @@ const PointsTablePage = () => {
         <div className="absolute top-1/4 right-[-10%] w-[400px] h-[400px] bg-blue-600/5 rounded-full blur-[120px] pointer-events-none" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
           <div className="border-b border-white/[0.08] pb-6 mb-8">
             <h1 className="text-4xl font-extrabold uppercase tracking-tight text-white" style={{ fontFamily: 'Rajdhani, sans-serif' }}>
               Points table
             </h1>
             <p className="text-sm text-white/40 font-medium tracking-wide mt-1 uppercase">Season 2026 Standings</p>
-          </div>
-
-          <div className="flex gap-3 mb-8">
-            <button className="px-6 py-2 rounded-md font-bold text-xs bg-gradient-to-r from-[#E91E8C] to-[#FF6B1A] uppercase tracking-wide text-white shadow-md">
-              Points Table
-            </button>
-            <button className="px-6 py-2 rounded-md font-bold text-xs bg-white/5 border border-white/10 text-white/50 hover:text-white uppercase tracking-wide transition-all">
-              Playoffs
-            </button>
           </div>
 
           <motion.div
@@ -145,7 +183,6 @@ const PointsTablePage = () => {
           </motion.div>
         </div>
       </main>
-
       <Footer />
     </>
   );
