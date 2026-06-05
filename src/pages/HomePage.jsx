@@ -7,7 +7,6 @@ import Header from '@/components/Header.jsx';
 import Footer from '@/components/Footer.jsx';
 import MarqueeScoreTicker from '@/components/MarqueeScoreTicker.jsx';
 import ParticleHero from '@/components/ParticleHero.jsx';
-import CricketBallAnimation from '@/components/CricketBallAnimation.jsx';
 import MatchCard from '@/components/MatchCard.jsx';
 import NewsCard from '@/components/NewsCard.jsx';
 import PlayerCard from '@/components/PlayerCard.jsx';
@@ -23,7 +22,7 @@ const HomePage = () => {
 
   return <>
       <Helmet>
-        <title>ISCL - India's Biggest Softball Cricket League</title>
+        <title>ISCL - India's Biggest Softball Cricket Leagueee</title>
 
         <link
           rel="icon"
@@ -41,9 +40,8 @@ const HomePage = () => {
       <Header />
 
       {/* Hero Section */}
-      <ParticleHero backgroundImage="https://images.unsplash.com/photo-1576868986107-b5f3e2e89fff">
+      <ParticleHero>
         <div className="relative min-h-screen flex items-center justify-center px-4">
-          <CricketBallAnimation />
           
           <div className="max-w-5xl mx-auto text-center space-y-8">
             {/* Logo with Glow */}
@@ -243,17 +241,7 @@ const HomePage = () => {
         }} transition={{
           duration: 0.5
         }}>
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-12 text-center" style={{
-            fontFamily: 'Rajdhani, sans-serif'
-          }}>
-              Tournament stats
-            </h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-              <StatsBar icon={Trophy} value={tournamentStats.totalMatches} label="Total matches" color="#2563EB" />
-              <StatsBar icon={Zap} value={tournamentStats.totalSixes} label="Total sixes" color="#E91E8C" />
-              <StatsBar icon={Target} value={tournamentStats.highestScore} label="Highest score" color="#FF6B1A" />
-              <StatsBar icon={Users} value={tournamentStats.mostWickets} label="Most wickets" color="#AACC00" />
-            </div>
+            
           </motion.div>
         </div>
       </section>
