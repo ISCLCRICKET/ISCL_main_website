@@ -96,10 +96,10 @@ const HomePage = () => {
           }} transition={{
             duration: 0.5,
             delay: 0.3
-          }} className="text-xl md:text-2xl text-white/80 font-semibold" style={{
+          }} className="text-2xl md:text-3xl text-white/80 font-semibold" style={{
             fontFamily: 'Poppins, sans-serif'
           }}>
-              Fastest. Fiercest. Most fearless.
+              Gully to Glory
             </motion.p>
 
             {/* CTA Buttons */}

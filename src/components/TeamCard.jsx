@@ -11,12 +11,16 @@ const TeamCard = ({ team }) => {
         <div className="space-y-4 flex-shrink-0">
           {/* Team Logo */}
           <div className="flex justify-center">
-            <div 
-              className="w-24 h-24 rounded-full flex items-center justify-center text-5xl border-4 transition-transform duration-200 group-hover:scale-110 shadow-lg"
-              style={{ borderColor: team.color }}
-            >
-              {team.logo}
-            </div>
+            <div
+  className="w-24 h-24 rounded-full border-4 transition-transform duration-200 group-hover:scale-110 shadow-lg overflow-hidden bg-white flex items-center justify-center"
+  style={{ borderColor: team.color }}
+>
+  <img
+    src={team.logo}
+    alt={team.name}
+    className="w-full h-full object-cover"
+  />
+</div>
           </div>
 
           {/* Team Meta & Name with locked vertical alignment container */}
