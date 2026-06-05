@@ -1,14 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
 import Header from '@/components/Header.jsx';
 import Footer from '@/components/Footer.jsx';
 import MarqueeScoreTicker from '@/components/MarqueeScoreTicker.jsx';
 import FilterBar from '@/components/FilterBar.jsx';
-import { news } from '@/lib/mockData.js';
+import { news as mockNews } from '@/lib/mockData.js';
+import { db } from '@/lib/supabaseClient.js';
 
 const NewsPage = () => {
+  const [news, setNews] = useState(mockNews);
   const [activeFilter, setActiveFilter] = useState('all');
+
+  useEffect(() => {
+    const fetchNewsData = async () => {
+      try {
+        const fetchedNews = await db.getNews();
+        if (fetchedNews && fetchedNews.length) {
+          setNews(fetchedNews);
+        }
+      } catch (err) {
+        console.warn("News page database fetch failed:", err);
+      }
+    };
+    fetchNewsData();
+  }, []);
 
   const filters = [
     { label: 'All Articles', value: 'all' },

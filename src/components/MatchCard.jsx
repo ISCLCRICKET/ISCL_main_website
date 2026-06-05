@@ -3,73 +3,115 @@ import GlassmorphismCard from './GlassmorphismCard.jsx';
 import CountdownTimer from './CountdownTimer.jsx';
 
 const MatchCard = ({ match }) => {
-  const isUpcoming = match.status === 'upcoming';
-  const isCompleted = match.status === 'completed';
+  const isUpcoming = match?.status === 'upcoming';
+  const isCompleted = match?.status === 'completed';
+  const isLive = match?.status === 'live';
+  const winnerName = typeof match?.winner === 'object' ? match?.winner?.name : match?.winner;
+
+  const formattedDate = () => {
+    if (!match?.date) return '';
+    const d = new Date(match.date);
+    if (isNaN(d.getTime())) return match.date;
+    return d.toLocaleDateString('en-IN', { 
+      weekday: 'short', 
+      day: 'numeric', 
+      month: 'short', 
+      year: 'numeric' 
+    });
+  };
+
+  const renderTeamLogo = (team) => {
+    const logo = team?.logo;
+    if (logo && typeof logo === 'string' && (logo.startsWith('/') || logo.startsWith('http') || logo.endsWith('.png') || logo.endsWith('.jpg') || logo.endsWith('.jpeg'))) {
+      return (
+        <div className="w-14 h-14 sm:w-18 sm:h-18 mx-auto bg-white/5 rounded-full p-1.5 flex items-center justify-center overflow-hidden border border-white/10 shadow-inner">
+          <img 
+            src={logo} 
+            alt={team?.name || 'Team'} 
+            className="max-w-full max-h-full object-contain filter drop-shadow-[0_2px_4px_rgba(255,255,255,0.05)]"
+            onError={(e) => { e.target.style.display = 'none'; }} 
+          />
+        </div>
+      );
+    }
+    return (
+      <div className="w-14 h-14 sm:w-18 sm:h-18 mx-auto bg-white/5 rounded-full flex items-center justify-center border border-white/10 text-2xl sm:text-3xl">
+        {logo || '🏏'}
+      </div>
+    );
+  };
 
   return (
-    <GlassmorphismCard className="h-full">
-      <div className="p-6 space-y-6">
-        {/* Teams */}
-        <div className="flex items-center justify-between gap-4">
+    <GlassmorphismCard className="h-full w-full overflow-hidden">
+      <div className="p-5 sm:p-6 space-y-6">
+        {/* Teams Container */}
+        <div className="flex items-center justify-between gap-2 sm:gap-4 w-full">
           {/* Team 1 */}
-          <div className="flex-1 text-center space-y-2">
-            <div className="text-4xl">{match.team1.logo}</div>
-            <p className="font-semibold text-white">{match.team1.name}</p>
-            {isCompleted && (
-              <p className="text-2xl font-bold text-white" style={{ fontFamily: 'Oswald, sans-serif' }}>
-                {match.score.team1}
+          <div className="flex-1 text-center min-w-0 space-y-2">
+            {renderTeamLogo(match?.team1)}
+            <p className="font-bold text-white text-xs sm:text-sm md:text-base mt-2 line-clamp-2 uppercase tracking-wide leading-tight break-words max-w-[120px] sm:max-w-[150px] mx-auto">
+              {match?.team1?.name || 'TBD'}
+            </p>
+            {(isCompleted || isLive) && match?.score && (
+              <p className="text-xl sm:text-2xl font-bold text-white font-mono mt-1" style={{ fontFamily: 'Oswald, sans-serif' }}>
+                {match?.score?.team1}
               </p>
             )}
           </div>
 
-          {/* VS */}
-          <div className="flex flex-col items-center gap-2">
-            <span className="text-sm font-bold text-white/60 tracking-wider">VS</span>
-            {match.winner && (
-              <div className="px-3 py-1 rounded-full bg-[#AACC00]/20 border border-[#AACC00]/30">
-                <span className="text-xs font-semibold text-[#AACC00]">
-                  {match.winner.name === match.team1.name ? 'W' : 'L'}
+          {/* VS Divider */}
+          <div className="flex flex-col items-center gap-1.5 shrink-0 px-1">
+            <span className="text-[10px] sm:text-xs font-black text-white/45 tracking-widest bg-white/5 px-2 py-0.5 rounded-full uppercase">VS</span>
+            {match?.winner && match?.team1 && (
+              <div className="px-2 py-0.5 rounded bg-emerald-500/10 border border-emerald-500/20 mt-1">
+                <span className="text-[10px] font-black text-emerald-400">
+                  {winnerName === match?.team1?.name ? 'W' : 'L'}
                 </span>
               </div>
             )}
           </div>
 
           {/* Team 2 */}
-          <div className="flex-1 text-center space-y-2">
-            <div className="text-4xl">{match.team2.logo}</div>
-            <p className="font-semibold text-white">{match.team2.name}</p>
-            {isCompleted && (
-              <p className="text-2xl font-bold text-white" style={{ fontFamily: 'Oswald, sans-serif' }}>
-                {match.score.team2}
+          <div className="flex-1 text-center min-w-0 space-y-2">
+            {renderTeamLogo(match?.team2)}
+            <p className="font-bold text-white text-xs sm:text-sm md:text-base mt-2 line-clamp-2 uppercase tracking-wide leading-tight break-words max-w-[120px] sm:max-w-[150px] mx-auto">
+              {match?.team2?.name || 'TBD'}
+            </p>
+            {(isCompleted || isLive) && match?.score && (
+              <p className="text-xl sm:text-2xl font-bold text-white font-mono mt-1" style={{ fontFamily: 'Oswald, sans-serif' }}>
+                {match?.score?.team2}
               </p>
             )}
           </div>
         </div>
 
         {/* Match Details */}
-        <div className="space-y-2 text-center">
-          <p className="text-sm text-white/60">
-            {new Date(match.date).toLocaleDateString('en-IN', { 
-              weekday: 'short', 
-              day: 'numeric', 
-              month: 'short', 
-              year: 'numeric' 
-            })} • {match.time}
+        <div className="space-y-1 text-center border-t border-white/[0.04] pt-4">
+          <p className="text-xs sm:text-sm font-semibold text-white/50 tracking-wider">
+            {formattedDate()}{match?.time ? ` • ${match.time}` : ''}
           </p>
-          <p className="text-sm text-white/80">{match.venue}</p>
+          <p className="text-xs sm:text-sm font-bold text-white/80 uppercase tracking-wide truncate max-w-[280px] sm:max-w-[400px] mx-auto">{match?.venue}</p>
         </div>
 
-        {/* Countdown or Result */}
-        {isUpcoming && match.countdown && (
-          <div className="pt-4 border-t border-white/[0.08]">
+        {/* Countdown or Result Banner */}
+        {isUpcoming && match?.countdown && (
+          <div className="pt-2">
             <CountdownTimer targetDate={match.countdown} />
           </div>
         )}
 
-        {isCompleted && match.winner && (
-          <div className="pt-4 border-t border-white/[0.08]">
-            <div className="flex items-center justify-center gap-2 text-[#AACC00]">
-              <span className="text-sm font-semibold">{match.winner.name} won</span>
+        {isCompleted && match?.winner && (
+          <div className="pt-2 border-t border-white/[0.04]">
+            <div className="flex items-center justify-center gap-2 text-emerald-400">
+              <span className="text-xs sm:text-sm font-black uppercase tracking-wider bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">{winnerName || 'Winner'} won</span>
+            </div>
+          </div>
+        )}
+
+        {isLive && (
+          <div className="pt-2 border-t border-white/[0.04]">
+            <div className="flex items-center justify-center gap-2 text-rose-500">
+              <span className="text-xs sm:text-sm font-black uppercase tracking-widest bg-rose-500/10 px-3 py-1 rounded-full border border-rose-500/20 animate-pulse">● Live Coverage</span>
             </div>
           </div>
         )}

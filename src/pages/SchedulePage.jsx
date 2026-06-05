@@ -1,17 +1,46 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronDown, Calendar, MapPin, Award } from 'lucide-react';
 import Header from '@/components/Header.jsx';
 import Footer from '@/components/Footer.jsx';
 import MarqueeScoreTicker from '@/components/MarqueeScoreTicker.jsx';
-import { matches } from '@/lib/mockData.js';
+import { matches as mockMatches } from '@/lib/mockData.js';
+import { db, hasSupabase, supabase } from '@/lib/supabaseClient.js';
 
 const SchedulePage = () => {
-  // Navigation filters matching the exact options visible in Screenshot 2026-06-04 at 12.31.47 PM.jpg
+  const [matches, setMatches] = useState(mockMatches);
   const [activeTab, setActiveTab] = useState('Results'); 
   const [selectedSeason, setSelectedSeason] = useState('Season 1 2025');
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const loadMatches = async () => {
+    try {
+      const fetchedMatches = await db.getMatches();
+      if (fetchedMatches && fetchedMatches.length) {
+        setMatches(fetchedMatches);
+      }
+    } catch (err) {
+      console.warn("Schedule page database fetch failed:", err);
+    }
+  };
+
+  useEffect(() => {
+    loadMatches();
+
+    if (hasSupabase && supabase) {
+      const channel = supabase
+        .channel('public:matches:schedule')
+        .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'matches' }, () => {
+          loadMatches();
+        })
+        .subscribe();
+
+      return () => {
+        supabase.removeChannel(channel);
+      };
+    }
+  }, []);
 
   const menuTabs = ['Live', 'Results', 'Standings'];
   const seasons = ['Season 1 2025', 'Season 2 2026'];
@@ -166,24 +195,24 @@ const SchedulePage = () => {
                   {/* Center Column Block: Team Labels, Match Center Stats and Toss Summaries */}
                   <div className="p-6 md:px-10 flex flex-col items-center justify-center text-center">
                     <div className="text-xs font-bold uppercase text-white/80 tracking-wide flex items-center gap-2 mb-3">
-                      <span>{match.team1.name}</span>
+                      <span>{match.team1?.name || 'TBD'}</span>
                       <span className="text-white/30 font-normal lowercase text-[11px]">vs</span>
-                      <span>{match.team2.name}</span>
+                      <span>{match.team2?.name || 'TBD'}</span>
                     </div>
 
                     {/* Blue Tinted Official Toss Banner */}
                     <div className="w-full max-w-xl bg-blue-600/5 border border-blue-500/10 px-4 py-1.5 rounded text-[10px] font-bold text-blue-400 tracking-wide uppercase mb-5">
-                      {match.summary.split('.')[1]?.trim() || match.summary}
+                      {match.summary ? (match.summary.split('.')[1]?.trim() || match.summary) : 'Match scheduled'}
                     </div>
 
                     {/* Massive Numeric Runs Layout */}
                     <div className="flex items-center justify-center gap-12 md:gap-16 w-full">
                       <div className="flex flex-col items-center">
                         <span className="text-2xl md:text-3xl font-black font-mono tracking-tight text-white/90">
-                          {match.score?.team1.split(' ')[0] || '0/0'}
+                          {match.score?.team1?.split(' ')[0] || '0/0'}
                         </span>
                         <span className="text-[10px] font-bold font-mono text-white/30 uppercase mt-0.5">
-                          {match.score?.team1.split(' ')[1] || '(0 Ov)'}
+                          {match.score?.team1?.split(' ')[1] || '(0 Ov)'}
                         </span>
                       </div>
 
@@ -191,10 +220,10 @@ const SchedulePage = () => {
 
                       <div className="flex flex-col items-center">
                         <span className="text-2xl md:text-3xl font-black font-mono tracking-tight text-white/90">
-                          {match.score?.team2.split(' ')[0] || '0/0'}
+                          {match.score?.team2?.split(' ')[0] || '0/0'}
                         </span>
                         <span className="text-[10px] font-bold font-mono text-white/30 uppercase mt-0.5">
-                          {match.score?.team2.split(' ')[1] || '(0 Ov)'}
+                          {match.score?.team2?.split(' ')[1] || '(0 Ov)'}
                         </span>
                       </div>
                     </div>
@@ -203,7 +232,7 @@ const SchedulePage = () => {
                   {/* Right Side Column Block: Winner Declaration Action Handler */}
                   <div className="p-6 md:px-8 h-full bg-black/10 flex flex-col justify-center items-center text-center md:border-l border-white/[0.04]">
                     <p className="text-[11px] font-black text-emerald-400 tracking-wide uppercase mb-4 max-w-[180px] leading-snug">
-                      {match.summary.split('.')[0]}
+                      {match.summary ? match.summary.split('.')[0] : 'Scheduled'}
                     </p>
                     <button className="w-full max-w-[160px] bg-[#1A1A26] hover:bg-[#2563EB] border border-white/[0.08] hover:border-transparent text-white font-bold text-[10px] uppercase tracking-widest py-2.5 rounded-lg transition-all duration-200 shadow-md">
                       View Match Center

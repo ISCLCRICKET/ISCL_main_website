@@ -9,6 +9,8 @@ const MatchScorecard = ({ match }) => {
     );
   }
 
+  const winnerName = typeof match?.winner === 'object' ? match?.winner?.name : match?.winner;
+
   return (
     <div className="space-y-6">
       {/* Match Header */}
@@ -27,7 +29,7 @@ const MatchScorecard = ({ match }) => {
         {match.winner && (
           <div className="inline-block px-4 py-2 rounded-full bg-[#AACC00]/20 border border-[#AACC00]/30">
             <span className="text-sm font-semibold text-[#AACC00]">
-              {match.winner.name} won
+              {winnerName} won
             </span>
           </div>
         )}

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { User, MapPin, Award, ShieldCheck, ArrowRight } from 'lucide-react';
+import { db } from '@/lib/supabaseClient';
 
 export default function AllRounderRegistration() {
   const [formData, setFormData] = useState({
@@ -110,7 +111,20 @@ export default function AllRounderRegistration() {
             </div>
 
             <button 
-              onClick={() => {
+              onClick={async () => {
+                try {
+                  await db.saveRegistration({
+                    full_name: formData.fullName,
+                    whatsapp: formData.whatsapp,
+                    email: formData.email,
+                    district: formData.district,
+                    pincode: formData.pincode,
+                    role: 'All-Rounder'
+                  });
+                } catch (err) {
+                  console.warn("Failed to save registration to database:", err);
+                }
+
                 const baseRazorpayUrl = "https://pages.razorpay.com/pl_SjCoNYeAlyPOcn/view"; 
                 
                 const queryParams = new URLSearchParams({

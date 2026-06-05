@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
 import Header from '@/components/Header.jsx';
@@ -6,10 +6,26 @@ import Footer from '@/components/Footer.jsx';
 import MarqueeScoreTicker from '@/components/MarqueeScoreTicker.jsx';
 import TeamCard from '@/components/TeamCard.jsx';
 import TeamDetailModal from '@/components/TeamDetailModal.jsx';
-import { teams } from '@/lib/mockData.js';
+import { teams as mockTeams } from '@/lib/mockData.js';
+import { db } from '@/lib/supabaseClient.js';
 
 const TeamsPage = () => {
   const [selectedTeam, setSelectedTeam] = useState(null);
+  const [teams, setTeams] = useState(mockTeams);
+
+  useEffect(() => {
+    const fetchTeams = async () => {
+      try {
+        const fetchedTeams = await db.getTeams();
+        if (fetchedTeams && fetchedTeams.length) {
+          setTeams(fetchedTeams);
+        }
+      } catch (err) {
+        console.warn("Teams page database fetch failed:", err);
+      }
+    };
+    fetchTeams();
+  }, []);
 
   return (
     <>

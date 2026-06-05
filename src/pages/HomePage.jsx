@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -12,10 +12,50 @@ import NewsCard from '@/components/NewsCard.jsx';
 import PlayerCard from '@/components/PlayerCard.jsx';
 import StatsBar from '@/components/StatsBar.jsx';
 import PointsTableWidget from "@/components/PointsTableWidget.jsx"; // Component successfully linked
-import { matches, news, players, pointsTable, tournamentStats } from '@/lib/mockData.js';
+import { matches as mockMatches, news as mockNews, players as mockPlayers, pointsTable as mockPointsTable } from '@/lib/mockData.js';
+import { db, hasSupabase, supabase } from '@/lib/supabaseClient.js';
 
 const HomePage = () => {
-  const featuredMatch = matches.find(m => m.status === 'upcoming') || matches[0];
+  const [matches, setMatches] = useState(mockMatches);
+  const [news, setNews] = useState(mockNews);
+  const [players, setPlayers] = useState(mockPlayers);
+  const [pointsTable, setPointsTable] = useState(mockPointsTable);
+
+  useEffect(() => {
+    const loadHomeData = async () => {
+      try {
+        const fMatches = await db.getMatches();
+        const fNews = await db.getNews();
+        const fPlayers = await db.getPlayers();
+        const fStandings = await db.getStandings();
+
+        if (fMatches && fMatches.length) setMatches(fMatches);
+        if (fNews && fNews.length) setNews(fNews);
+        if (fPlayers && fPlayers.length) setPlayers(fPlayers);
+        if (fStandings && fStandings.length) setPointsTable(fStandings);
+      } catch (err) {
+        console.warn("Database fetch failed, falling back to offline mock data:", err);
+      }
+    };
+    loadHomeData();
+
+    // Enable Supabase Realtime Score Updates if active
+    if (hasSupabase && supabase) {
+      const channel = supabase
+        .channel('public:matches')
+        .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'matches' }, async () => {
+          const fMatches = await db.getMatches();
+          if (fMatches && fMatches.length) setMatches(fMatches);
+        })
+        .subscribe();
+
+      return () => {
+        supabase.removeChannel(channel);
+      };
+    }
+  }, []);
+
+  const featuredMatch = matches.find(m => m.status === 'live') || matches.find(m => m.status === 'upcoming') || matches[0];
   const latestNews = news.slice(0, 4);
   const featuredPlayer = players[0];
   const topTeams = pointsTable.slice(0, 4);

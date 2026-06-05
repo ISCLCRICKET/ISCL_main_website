@@ -1,12 +1,27 @@
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { pointsTable } from "@/lib/mockData.js";
+import { pointsTable as mockPointsTable } from "@/lib/mockData.js";
+import { db } from "@/lib/supabaseClient.js";
 
 const PointsTableWidget = () => {
   const scrollRef = useRef(null);
-  const previewTeams = pointsTable;
+  const [previewTeams, setPreviewTeams] = useState(mockPointsTable);
+
+  useEffect(() => {
+    const fetchStandings = async () => {
+      try {
+        const standings = await db.getStandings();
+        if (standings && standings.length) {
+          setPreviewTeams(standings);
+        }
+      } catch (err) {
+        console.warn("Points table widget database fetch failed:", err);
+      }
+    };
+    fetchStandings();
+  }, []);
 
   const scroll = (direction) => {
     if (scrollRef.current) {
@@ -48,11 +63,12 @@ const PointsTableWidget = () => {
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
           {previewTeams.map((team, idx) => {
-            const isQualified = team.position <= 4;
+            if (!team) return null;
+            const isQualified = team.position && team.position <= 4;
             const nrrValue = parseFloat(team.nrr) || 0;
             
             // Safe guard fallback layout configuration if teams[idx] array index evaluates to undefined
-            const teamInfo = team.team || { name: `Team Slot ${team.position}`, logo: '🏏' };
+            const teamInfo = team.team || { name: `Team Slot ${team.position || idx + 1}`, logo: '🏏' };
 
             return (
               <motion.div

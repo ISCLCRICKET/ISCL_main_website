@@ -17,6 +17,10 @@ import TermsOfServicePage from './pages/TermsOfServicePage.jsx';
 import AllRounderRegistration from './pages/AllRounderRegistration.jsx';
 import SpecialistRegistration from './pages/SpecialistRegistration.jsx';
 
+import ProtectedRoute from './components/ProtectedRoute.jsx';
+import AdminLogin from './pages/admin/AdminLogin.jsx';
+import AdminDashboard from './pages/admin/AdminDashboard.jsx';
+
 function App() {
     const [isRegisterOpen, setIsRegisterOpen] = useState(false);
 
@@ -51,6 +55,14 @@ function App() {
                 {/* Wired up the Legal Page Links here */}
                 <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
                 <Route path="/terms-of-service" element={<TermsOfServicePage />} />
+                
+                {/* Admin Portal Console Routes */}
+                <Route path="/admin/login" element={<AdminLogin />} />
+                <Route path="/admin/dashboard" element={
+                    <ProtectedRoute>
+                        <AdminDashboard />
+                    </ProtectedRoute>
+                } />
                 
                 <Route path="*" element={
                     <div className="min-h-screen bg-[#0A0A0A] flex items-center justify-center">

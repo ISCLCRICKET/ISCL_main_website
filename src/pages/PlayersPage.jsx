@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { Award, Trophy } from 'lucide-react';
 import Header from '@/components/Header.jsx';
 import Footer from '@/components/Footer.jsx';
 import MarqueeScoreTicker from '@/components/MarqueeScoreTicker.jsx';
 import GlassmorphismCard from '@/components/GlassmorphismCard.jsx';
+import { db } from '@/lib/supabaseClient.js';
 
 // Inline authentic ISCL data with exactly 5 players per segment
 const localStatsData = {
@@ -77,6 +78,70 @@ const localStatsData = {
 };
 
 const PlayersPage = () => {
+  const [statsData, setStatsData] = useState(localStatsData);
+  const [selectedCategory, setSelectedCategory] = useState('all');
+
+  useEffect(() => {
+    const loadPlayerStats = async () => {
+      try {
+        const fetchedPlayers = await db.getPlayers();
+        if (fetchedPlayers && fetchedPlayers.length) {
+          // Perform dynamic standings calculations in memory
+          const sortedRuns = [...fetchedPlayers].sort((a, b) => (b.runs || 0) - (a.runs || 0));
+          const sortedWickets = [...fetchedPlayers].sort((a, b) => (b.wickets || 0) - (a.wickets || 0));
+          const sortedFifties = [...fetchedPlayers].sort((a, b) => (b.fifties || 0) - (a.fifties || 0));
+          const sortedEconomy = [...fetchedPlayers].filter(p => (p.wickets || 0) > 0 || (p.economy || 0) > 0).sort((a, b) => (a.economy || 0) - (b.economy || 0));
+          const sortedFours = [...fetchedPlayers].sort((a, b) => (b.fours || 0) - (a.fours || 0));
+          const sortedSixes = [...fetchedPlayers].sort((a, b) => (b.sixes || 0) - (a.sixes || 0));
+          const sortedBoundaries = [...fetchedPlayers].sort((a, b) => {
+            const boundariesB = b.boundaries || ((b.fours || 0) + (b.sixes || 0));
+            const boundariesA = a.boundaries || ((a.fours || 0) + (a.sixes || 0));
+            return boundariesB - boundariesA;
+          });
+
+          const orangeCapPlayer = sortedRuns[0];
+          const purpleCapPlayer = sortedWickets[0];
+
+          const mappedData = {
+            orangeCap: {
+              player: {
+                name: orangeCapPlayer?.name || 'N/A',
+                team: {
+                  name: orangeCapPlayer?.team?.name || orangeCapPlayer?.team_name || 'N/A',
+                  logo: orangeCapPlayer?.team?.logo || '🏏'
+                }
+              },
+              runs: orangeCapPlayer?.runs || 0
+            },
+            purpleCap: {
+              player: {
+                name: purpleCapPlayer?.name || 'N/A',
+                team: {
+                  name: purpleCapPlayer?.team?.name || purpleCapPlayer?.team_name || 'N/A',
+                  logo: purpleCapPlayer?.team?.logo || '🏏'
+                }
+              },
+              wickets: purpleCapPlayer?.wickets || 0
+            },
+            runs: sortedRuns.slice(0, 5).map(p => ({ name: p.name, teamShort: (p.team?.name || p.team_name || 'N/A').toUpperCase(), val: (p.runs || 0).toString() })),
+            wickets: sortedWickets.slice(0, 5).map(p => ({ name: p.name, teamShort: (p.team?.name || p.team_name || 'N/A').toUpperCase(), val: (p.wickets || 0).toString() })),
+            highestScores: sortedRuns.slice(0, 5).map(p => ({ name: p.name, teamShort: (p.team?.name || p.team_name || 'N/A').toUpperCase(), val: (p.runs || 0).toString() })),
+            bowlingFigures: sortedWickets.slice(0, 5).map(p => ({ name: p.name, teamShort: (p.team?.name || p.team_name || 'N/A').toUpperCase(), val: `${p.wickets || 0}/15` })), 
+            fifties: sortedFifties.slice(0, 5).map(p => ({ name: p.name, teamShort: (p.team?.name || p.team_name || 'N/A').toUpperCase(), val: (p.fifties || 0).toString() })),
+            economy: sortedEconomy.slice(0, 5).map(p => ({ name: p.name, teamShort: (p.team?.name || p.team_name || 'N/A').toUpperCase(), val: (p.economy || 0.0).toFixed(2) })),
+            fours: sortedFours.slice(0, 5).map(p => ({ name: p.name, teamShort: (p.team?.name || p.team_name || 'N/A').toUpperCase(), val: (p.fours || 0).toString() })),
+            sixes: sortedSixes.slice(0, 5).map(p => ({ name: p.name, teamShort: (p.team?.name || p.team_name || 'N/A').toUpperCase(), val: (p.sixes || 0).toString() })),
+            boundaries: sortedBoundaries.slice(0, 5).map(p => ({ name: p.name, teamShort: (p.team?.name || p.team_name || 'N/A').toUpperCase(), val: (p.boundaries || ((p.fours || 0) + (p.sixes || 0))).toString() }))
+          };
+          
+          setStatsData(mappedData);
+        }
+      } catch (err) {
+        console.warn("Leaderboards database fetch failed:", err);
+      }
+    };
+    loadPlayerStats();
+  }, []);
   
   const LeaderboardWidget = ({ title, data, highlightColor = 'text-white' }) => (
     <div className="bg-[#0c0c0d] border border-white/[0.06] rounded-xl p-5 shadow-xl relative overflow-hidden">
@@ -144,12 +209,12 @@ const PlayersPage = () => {
                     <div className="w-12 h-12 rounded-xl bg-[#FF6B1A]/10 border border-[#FF6B1A]/20 flex items-center justify-center text-[#FF6B1A]"><Award size={22} /></div>
                     <div>
                       <span className="text-[10px] font-black tracking-widest uppercase text-[#FF6B1A] bg-[#FF6B1A]/10 px-2 py-0.5 rounded">Orange Cap Leader</span>
-                      <h2 className="text-2xl font-black text-white mt-1 uppercase tracking-tight" style={{ fontFamily: 'Rajdhani, sans-serif' }}>{localStatsData.orangeCap.player.name}</h2>
-                      <p className="text-xs text-white/50 font-semibold mt-0.5">{localStatsData.orangeCap.player.team.logo} {localStatsData.orangeCap.player.team.name}</p>
+                      <h2 className="text-2xl font-black text-white mt-1 uppercase tracking-tight" style={{ fontFamily: 'Rajdhani, sans-serif' }}>{statsData.orangeCap.player.name}</h2>
+                      <p className="text-xs text-white/50 font-semibold mt-0.5">{statsData.orangeCap.player.team.logo} {statsData.orangeCap.player.team.name}</p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="text-4xl font-black text-[#FF6B1A] font-mono tracking-tight">{localStatsData.orangeCap.runs}</p>
+                    <p className="text-4xl font-black text-[#FF6B1A] font-mono tracking-tight">{statsData.orangeCap.runs}</p>
                     <p className="text-[9px] uppercase tracking-wider text-white/40 font-bold mt-0.5">Runs</p>
                   </div>
                 </div>
@@ -165,12 +230,12 @@ const PlayersPage = () => {
                     <div className="w-12 h-12 rounded-xl bg-[#8B5CF6]/10 border border-[#8B5CF6]/20 flex items-center justify-center text-[#8B5CF6]"><Award size={22} /></div>
                     <div>
                       <span className="text-[10px] font-black tracking-widest uppercase text-[#8B5CF6] bg-[#8B5CF6]/10 px-2 py-0.5 rounded">Purple Cap Leader</span>
-                      <h2 className="text-2xl font-black text-white mt-1 uppercase tracking-tight" style={{ fontFamily: 'Rajdhani, sans-serif' }}>{localStatsData.purpleCap.player.name}</h2>
-                      <p className="text-xs text-white/50 font-semibold mt-0.5">{localStatsData.purpleCap.player.team.logo} {localStatsData.purpleCap.player.team.name}</p>
+                      <h2 className="text-2xl font-black text-white mt-1 uppercase tracking-tight" style={{ fontFamily: 'Rajdhani, sans-serif' }}>{statsData.purpleCap.player.name}</h2>
+                      <p className="text-xs text-white/50 font-semibold mt-0.5">{statsData.purpleCap.player.team.logo} {statsData.purpleCap.player.team.name}</p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="text-4xl font-black text-[#8B5CF6] font-mono tracking-tight">{localStatsData.purpleCap.wickets}</p>
+                    <p className="text-4xl font-black text-[#8B5CF6] font-mono tracking-tight">{statsData.purpleCap.wickets}</p>
                     <p className="text-[9px] uppercase tracking-wider text-white/40 font-bold mt-0.5">Wickets</p>
                   </div>
                 </div>
@@ -180,22 +245,68 @@ const PlayersPage = () => {
 
           {/* Grid Layout containing precisely 5 rows per widget */}
           <div>
-            <div className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-white/40 mb-6">
-              <Trophy size={14} className="text-[#FF6B1A]" /> Season Leaderboards
+            <div className="flex flex-col xl:flex-row xl:items-center justify-between gap-4 mb-6 border-b border-white/[0.08] pb-4">
+              <div className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-white/40">
+                <Trophy size={14} className="text-[#FF6B1A]" /> Season Leaderboards
+              </div>
+              
+              {/* Category Selector Tabs */}
+              <div className="flex flex-wrap gap-1.5">
+                {[
+                  { id: 'all', label: 'All' },
+                  { id: 'runs', label: 'Runs' },
+                  { id: 'wickets', label: 'Wickets' },
+                  { id: 'highestScores', label: 'Highest Scores' },
+                  { id: 'bowlingFigures', label: 'Best Bowling' },
+                  { id: 'fifties', label: 'Fifties' },
+                  { id: 'economy', label: 'Economy' },
+                  { id: 'fours', label: 'Fours' },
+                  { id: 'sixes', label: 'Sixes' },
+                  { id: 'boundaries', label: 'Boundaries' }
+                ].map(cat => (
+                  <button
+                    key={cat.id}
+                    onClick={() => setSelectedCategory(cat.id)}
+                    className={`px-3 py-1.5 rounded-lg text-[10px] font-black uppercase tracking-wider transition-all duration-200 ${
+                      selectedCategory === cat.id 
+                        ? 'bg-[#FF6B1A] text-white shadow-lg shadow-[#FF6B1A]/20' 
+                        : 'bg-white/5 text-white/50 hover:bg-white/10 hover:text-white'
+                    }`}
+                  >
+                    {cat.label}
+                  </button>
+                ))}
+              </div>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <LeaderboardWidget title="Runs" data={localStatsData.runs} highlightColor="text-[#FF6B1A]" />
-              <LeaderboardWidget title="Wickets" data={localStatsData.wickets} highlightColor="text-[#8B5CF6]" />
-              <LeaderboardWidget title="Highest Scores" data={localStatsData.highestScores} />
-              
-              <LeaderboardWidget title="Best Bowling Figures" data={localStatsData.bowlingFigures} />
-              <LeaderboardWidget title="Fifties" data={localStatsData.fifties} />
-              <LeaderboardWidget title="Economy Rates" data={localStatsData.economy} highlightColor="text-emerald-400" />
-              
-              <LeaderboardWidget title="Fours" data={localStatsData.fours} />
-              <LeaderboardWidget title="Sixes" data={localStatsData.sixes} />
-              <LeaderboardWidget title="Total Boundaries" data={localStatsData.boundaries} highlightColor="text-[#FF6B1A]" />
+              {(selectedCategory === 'all' || selectedCategory === 'runs') && (
+                <LeaderboardWidget title="Runs" data={statsData.runs} highlightColor="text-[#FF6B1A]" />
+              )}
+              {(selectedCategory === 'all' || selectedCategory === 'wickets') && (
+                <LeaderboardWidget title="Wickets" data={statsData.wickets} highlightColor="text-[#8B5CF6]" />
+              )}
+              {(selectedCategory === 'all' || selectedCategory === 'highestScores') && (
+                <LeaderboardWidget title="Highest Scores" data={statsData.highestScores} />
+              )}
+              {(selectedCategory === 'all' || selectedCategory === 'bowlingFigures') && (
+                <LeaderboardWidget title="Best Bowling Figures" data={statsData.bowlingFigures} />
+              )}
+              {(selectedCategory === 'all' || selectedCategory === 'fifties') && (
+                <LeaderboardWidget title="Fifties" data={statsData.fifties} />
+              )}
+              {(selectedCategory === 'all' || selectedCategory === 'economy') && (
+                <LeaderboardWidget title="Economy Rates" data={statsData.economy} highlightColor="text-emerald-400" />
+              )}
+              {(selectedCategory === 'all' || selectedCategory === 'fours') && (
+                <LeaderboardWidget title="Fours" data={statsData.fours} />
+              )}
+              {(selectedCategory === 'all' || selectedCategory === 'sixes') && (
+                <LeaderboardWidget title="Sixes" data={statsData.sixes} />
+              )}
+              {(selectedCategory === 'all' || selectedCategory === 'boundaries') && (
+                <LeaderboardWidget title="Total Boundaries" data={statsData.boundaries} />
+              )}
             </div>
           </div>
 

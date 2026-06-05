@@ -53,6 +53,10 @@ const ParticleHero = ({ children }) => {
       drawY = (canvas.height - drawHeight) / 2;
     }
 
+    // Enable high-quality image smoothing for crisp rendering
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = 'high';
+
     ctx.drawImage(img, drawX, drawY, drawWidth, drawHeight);
     currentFrameRef.current = frameIndex;
   };
@@ -112,8 +116,9 @@ const ParticleHero = ({ children }) => {
     const handleResize = () => {
       const canvas = canvasRef.current;
       if (!canvas) return;
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
       drawFrame(currentFrameRef.current);
     };
 
@@ -121,8 +126,9 @@ const ParticleHero = ({ children }) => {
     // Initial size setup
     const canvas = canvasRef.current;
     if (canvas) {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
     }
 
     return () => {

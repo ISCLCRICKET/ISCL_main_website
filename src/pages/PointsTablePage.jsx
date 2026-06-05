@@ -1,13 +1,29 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
 import { motion } from 'framer-motion';
 import Header from '@/components/Header.jsx';
 import Footer from '@/components/Footer.jsx';
 import MarqueeScoreTicker from '@/components/MarqueeScoreTicker.jsx';
 import SortableTable from '@/components/SortableTable.jsx';
-import { pointsTable } from '@/lib/mockData.js';
+import { pointsTable as mockPointsTable } from '@/lib/mockData.js';
+import { db } from '@/lib/supabaseClient.js';
 
 const PointsTablePage = () => {
+  const [pointsTable, setPointsTable] = useState(mockPointsTable);
+
+  useEffect(() => {
+    const fetchStandings = async () => {
+      try {
+        const standings = await db.getStandings();
+        if (standings && standings.length) {
+          setPointsTable(standings);
+        }
+      } catch (err) {
+        console.warn("Points table page database fetch failed:", err);
+      }
+    };
+    fetchStandings();
+  }, []);
   // Expanded logo mapping to support all 32 teams
   // Ensure these file names match your public/images folder exactly
   const teamLogos = {
