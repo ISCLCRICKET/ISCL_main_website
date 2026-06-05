@@ -17,7 +17,11 @@ const PlayerCard = ({ player }) => {
         {/* Card Header: Meta Info */}
         <div className="flex justify-between items-start">
           <div className="flex items-center gap-2">
-            <span className="text-xl filter drop-shadow-sm">{player.team.logo}</span>
+             <img 
+  src={player.team.logo} 
+  alt={player.team.name} 
+  className="w-8 h-8 object-contain filter drop-shadow-sm" 
+/>
             <span className="text-xs font-bold tracking-wider text-white/50 uppercase truncate max-w-[120px]">
               {player.team.name}
             </span>

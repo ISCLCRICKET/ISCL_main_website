@@ -56,7 +56,13 @@ const TeamDetailModal = ({ team, isOpen, onClose }) => {
               </button>
               
               <div className="text-center">
-                <div className="text-5xl mb-2 filter drop-shadow-md">{team.logo}</div>
+                <div className="w-24 h-24 mx-auto mb-4 overflow-hidden rounded-full border-4 border-white/10 bg-white flex items-center justify-center filter drop-shadow-md">
+  <img 
+    src={team.logo} 
+    alt={team.name} 
+    className="w-full h-full object-cover"
+  />
+</div>
                 <h2 className="text-3xl font-black uppercase tracking-tight text-white" style={{ fontFamily: 'Rajdhani, sans-serif' }}>
                   {team.name}
                 </h2>

@@ -60,12 +60,18 @@ const PlayerProfilePage = () => {
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
               <div className="flex items-center gap-4">
                 {/* Visual Typography Avatar Badge */}
-                <div 
-                  className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl font-black border shadow-xl"
-                  style={{ borderColor: player.team.color || '#fff', backgroundColor: '#0d0d0d' }}
-                >
-                  {player.team.logo || '🏏'}
-                </div>
+                {/* Fixed code */}
+<div 
+  className="w-16 h-16 rounded-2xl flex items-center justify-center border shadow-xl overflow-hidden bg-white"
+  style={{ borderColor: player.team.color || '#fff' }}
+>
+  <img 
+    src={player.team.logo} 
+    alt={player.team.name} 
+    className="w-full h-full object-cover"
+    onError={(e) => { e.target.style.display = 'none'; }} 
+  />
+</div>
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="text-[10px] font-black uppercase tracking-widest px-2 py-0.5 rounded bg-white/5 border border-white/10 text-white/70">
