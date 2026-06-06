@@ -169,11 +169,31 @@ export const db = {
   },
 
   getNews: async () => {
+    const parseArticle = (n) => {
+      let url = n.url || '#';
+      let content = n.content || '';
+      if (content.startsWith('LINK:')) {
+        url = content.substring(5);
+        content = '';
+      } else if (content.startsWith('http://') || content.startsWith('https://')) {
+        url = content;
+        content = '';
+      }
+      return {
+        ...n,
+        url,
+        content
+      };
+    };
+
     if (hasSupabase) {
       const { data, error } = await supabase.from('news').select('*').order('date', { ascending: false });
-      if (!error) return data;
+      if (!error && data) {
+        return data.map(parseArticle);
+      }
     }
-    return JSON.parse(localStorage.getItem('iscl_news') || '[]');
+    const local = JSON.parse(localStorage.getItem('iscl_news') || '[]');
+    return local.map(parseArticle);
   },
 
   getRegistrations: async () => {
@@ -198,6 +218,35 @@ export const db = {
     };
     localStorage.setItem('iscl_news', JSON.stringify([article, ...current]));
     return article;
+  },
+
+  updateNews: async (id, updates) => {
+    if (hasSupabase) {
+      const { data, error } = await supabase.from('news').update(updates).eq('id', id).select();
+      if (!error) return data[0];
+      throw error;
+    }
+    const current = JSON.parse(localStorage.getItem('iscl_news') || '[]');
+    const updated = current.map(n => {
+      if (n.id === id || String(n.id) === String(id)) {
+        return { ...n, ...updates };
+      }
+      return n;
+    });
+    localStorage.setItem('iscl_news', JSON.stringify(updated));
+    return updated.find(n => n.id === id || String(n.id) === String(id));
+  },
+
+  deleteNews: async (id) => {
+    if (hasSupabase) {
+      const { data, error } = await supabase.from('news').delete().eq('id', id).select();
+      if (!error) return data;
+      throw error;
+    }
+    const current = JSON.parse(localStorage.getItem('iscl_news') || '[]');
+    const filtered = current.filter(n => n.id !== id && String(n.id) !== String(id));
+    localStorage.setItem('iscl_news', JSON.stringify(filtered));
+    return filtered;
   },
 
   updateMatch: async (id, updates) => {
@@ -304,6 +353,18 @@ export const db = {
     const newPlayer = { id: nextId, ...playerData };
     localStorage.setItem('iscl_players', JSON.stringify([...current, newPlayer]));
     return newPlayer;
+  },
+
+  deletePlayer: async (id) => {
+    if (hasSupabase) {
+      const { data, error } = await supabase.from('players').delete().eq('id', id).select();
+      if (!error) return data;
+      throw error;
+    }
+    const current = JSON.parse(localStorage.getItem('iscl_players') || '[]');
+    const filtered = current.filter(p => p.id !== id && String(p.id) !== String(id));
+    localStorage.setItem('iscl_players', JSON.stringify(filtered));
+    return filtered;
   },
 
   resetStandings: async () => {

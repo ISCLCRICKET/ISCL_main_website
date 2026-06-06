@@ -140,7 +140,7 @@ const NewsPage = () => {
 
                   <div>
                     <span className="inline-flex items-center text-sm font-bold text-white uppercase tracking-widest group-hover:translate-x-2 transition-transform duration-300">
-                      Register Your Team Now <span className="ml-2 text-[#2563EB]">→</span>
+                      View Full Story <span className="ml-2 text-[#2563EB]">→</span>
                     </span>
                   </div>
                 </div>
@@ -204,7 +204,7 @@ const NewsPage = () => {
                 {/* Premium Card Footer Action */}
                 <div className="pt-2 border-t border-white/5 flex items-center justify-between">
                   <span className="text-xs font-bold tracking-widest uppercase text-white/70 group-hover:text-white group-hover:translate-x-1 transition-all duration-200">
-                    View Story
+                    View Full Story
                   </span>
                   <span className="text-white/30 group-hover:text-[#2563EB] text-sm transition-colors duration-200">→</span>
                 </div>

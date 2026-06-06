@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { db, hasSupabase, supabase } from '../../lib/supabaseClient';
 import { 
   Trophy, Tv, Newspaper, Users, RefreshCw, LogOut, 
-  CheckCircle2, PlusCircle, Save, AlertTriangle, Search, User
+  CheckCircle2, PlusCircle, Save, AlertTriangle, Search, User, UserCog, UserX, Trash2
 } from 'lucide-react';
 
 const AdminDashboard = () => {
@@ -19,6 +19,8 @@ const AdminDashboard = () => {
   const [registrations, setRegistrations] = useState([]);
   const [teams, setTeams] = useState([]);
   const [players, setPlayers] = useState([]);
+  const [news, setNews] = useState([]);
+  const [selectedNewsId, setSelectedNewsId] = useState('new');
   const [selectedPlayerId, setSelectedPlayerId] = useState('');
   const [playerSearch, setPlayerSearch] = useState('');
   const [playerSortCategory, setPlayerSortCategory] = useState('runs');
@@ -38,6 +40,17 @@ const AdminDashboard = () => {
     sixes: 0,
     boundaries: 0,
     matches: 5
+  });
+
+  // Squads State
+  const [squadSelectedTeamId, setSquadSelectedTeamId] = useState('');
+  const [squadSelectedPlayerId, setSquadSelectedPlayerId] = useState('');
+  const [squadPlayerForm, setSquadPlayerForm] = useState({
+    name: '',
+    role: 'Batter',
+    jersey: '',
+    photo: '',
+    team_id: ''
   });
   const navigate = useNavigate();
 
@@ -73,7 +86,8 @@ const AdminDashboard = () => {
     tag: 'Match Report',
     imageType: 'url',
     imageFile: null,
-    imageUrl: ''
+    imageUrl: '',
+    url: ''
   });
 
   const [regSearch, setRegSearch] = useState('');
@@ -87,12 +101,14 @@ const AdminDashboard = () => {
       const fetchedRegistrations = await db.getRegistrations();
       const fetchedTeams = await db.getTeams();
       const fetchedPlayers = await db.getPlayers();
+      const fetchedNews = await db.getNews();
       
       setMatches(fetchedMatches);
       setStandings(fetchedStandings);
       setRegistrations(fetchedRegistrations);
       setTeams(fetchedTeams);
       setPlayers(fetchedPlayers);
+      setNews(fetchedNews);
     } catch (err) {
       console.error("Failed to load dashboard data:", err);
     } finally {
@@ -198,6 +214,62 @@ const AdminDashboard = () => {
       });
     }
   }, [selectedPlayerId, players]);
+
+  // Handle Squad Player Selection
+  useEffect(() => {
+    if (squadSelectedPlayerId && squadSelectedPlayerId !== 'new') {
+      const player = players.find(p => String(p.id) === String(squadSelectedPlayerId));
+      if (player) {
+        setSquadPlayerForm({
+          name: player.name || '',
+          role: player.role || 'Batter',
+          jersey: player.jersey || '',
+          photo: player.photo || '',
+          team_id: player.team_id || ''
+        });
+      }
+    } else if (squadSelectedPlayerId === 'new') {
+      setSquadPlayerForm({
+        name: '',
+        role: 'Batter',
+        jersey: '',
+        photo: '',
+        team_id: squadSelectedTeamId || ''
+      });
+    }
+  }, [squadSelectedPlayerId, players, squadSelectedTeamId]);
+
+  // Handle News Selection
+  useEffect(() => {
+    if (selectedNewsId && selectedNewsId !== 'new') {
+      const article = news.find(n => String(n.id) === String(selectedNewsId));
+      if (article) {
+        // Check if image starts with http or is relative or is mock path
+        const isUpload = article.image && article.image.includes('supabase') && article.image.includes('storage');
+        setNewsForm({
+          title: article.title || '',
+          excerpt: article.excerpt || '',
+          content: article.content || '',
+          tag: article.tag || 'Match Report',
+          imageType: isUpload ? 'upload' : 'url',
+          imageFile: null,
+          imageUrl: isUpload ? '' : (article.image || ''),
+          url: article.url && article.url !== '#' ? article.url : ''
+        });
+      }
+    } else if (selectedNewsId === 'new') {
+      setNewsForm({
+        title: '',
+        excerpt: '',
+        content: '',
+        tag: 'Match Report',
+        imageType: 'url',
+        imageFile: null,
+        imageUrl: '',
+        url: ''
+      });
+    }
+  }, [selectedNewsId, news]);
 
   const handleLogout = async () => {
     if (hasSupabase) {
@@ -374,6 +446,61 @@ const AdminDashboard = () => {
     return list;
   };
 
+  // Submit Squad Player Update or Creation
+  const handleSquadPlayerSubmit = async (e) => {
+    e.preventDefault();
+    if (!squadSelectedPlayerId) return;
+
+    setActionLoading(true);
+    setSuccessMsg('');
+    setErrorMsg('');
+
+    try {
+      const payload = {
+        name: squadPlayerForm.name,
+        role: squadPlayerForm.role,
+        jersey: squadPlayerForm.jersey ? parseInt(squadPlayerForm.jersey) : null,
+        photo: squadPlayerForm.photo || null,
+        team_id: squadPlayerForm.team_id ? parseInt(squadPlayerForm.team_id) : null
+      };
+
+      if (squadSelectedPlayerId === 'new') {
+        const newPlayer = await db.createPlayer(payload);
+        setSuccessMsg('New squad player created successfully!');
+        setSquadSelectedPlayerId(newPlayer.id);
+      } else {
+        await db.updatePlayer(parseInt(squadSelectedPlayerId), payload);
+        setSuccessMsg('Squad player details updated successfully!');
+      }
+      await loadData();
+    } catch (err) {
+      setErrorMsg(err.message || 'Failed to submit squad player details.');
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  // Delete Squad Player Trigger
+  const handleSquadPlayerDelete = async () => {
+    if (!squadSelectedPlayerId || squadSelectedPlayerId === 'new') return;
+    if (!window.confirm("ARE YOU SURE you want to permanently delete this player from the system? This cannot be undone.")) return;
+
+    setActionLoading(true);
+    setSuccessMsg('');
+    setErrorMsg('');
+
+    try {
+      await db.deletePlayer(parseInt(squadSelectedPlayerId));
+      setSuccessMsg('Player deleted from squad roster successfully!');
+      setSquadSelectedPlayerId('');
+      await loadData();
+    } catch (err) {
+      setErrorMsg(err.message || 'Failed to delete player from database.');
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
   // Publish News Article
   const handleNewsSubmit = async (e) => {
     e.preventDefault();
@@ -382,40 +509,83 @@ const AdminDashboard = () => {
     setErrorMsg('');
 
     try {
-      let finalImageUrl = newsForm.imageUrl || 'https://images.unsplash.com/photo-1540747737956-378724044452';
+      let finalImageUrl = 'https://images.unsplash.com/photo-1540747737956-378724044452';
 
-      // If they uploaded an image file and Supabase is active, upload it to bucket
-      if (newsForm.imageType === 'upload' && newsForm.imageFile && hasSupabase) {
-        const file = newsForm.imageFile;
-        const fileExt = file.name.split('.').pop();
-        const fileName = `${Date.now()}.${fileExt}`;
-        const filePath = `news/${fileName}`;
+      // Keep existing image if editing
+      if (selectedNewsId && selectedNewsId !== 'new') {
+        const article = news.find(n => String(n.id) === String(selectedNewsId));
+        if (article) {
+          finalImageUrl = article.image;
+        }
+      }
 
-        // Upload file to bucket
-        const { error: uploadError } = await supabase.storage
-          .from('iscl-assets')
-          .upload(filePath, file);
+      // If they uploaded an image file, process it
+      if (newsForm.imageType === 'upload' && newsForm.imageFile) {
+        if (hasSupabase) {
+          try {
+            const file = newsForm.imageFile;
+            const fileExt = file.name.split('.').pop();
+            const fileName = `${Date.now()}.${fileExt}`;
+            const filePath = `news/${fileName}`;
 
-        if (uploadError) throw uploadError;
+            // Upload file to bucket
+            const { error: uploadError } = await supabase.storage
+              .from('iscl-assets')
+              .upload(filePath, file);
 
-        // Get public URL
-        const { data: { publicUrl } } = supabase.storage
-          .from('iscl-assets')
-          .getPublicUrl(filePath);
+            if (uploadError) throw uploadError;
 
-        finalImageUrl = publicUrl;
+            // Get public URL
+            const { data: { publicUrl } } = supabase.storage
+              .from('iscl-assets')
+              .getPublicUrl(filePath);
+
+            finalImageUrl = publicUrl;
+          } catch (storageErr) {
+            console.warn("Supabase storage upload failed (e.g. bucket not found), falling back to local Base64 storage:", storageErr);
+            // Convert local file to Base64 in offline/error fallback mode
+            const readAsDataURL = (file) => {
+              return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+              });
+            };
+            finalImageUrl = await readAsDataURL(newsForm.imageFile);
+          }
+        } else {
+          // Convert local file to Base64 in offline fallback mode
+          const readAsDataURL = (file) => {
+            return new Promise((resolve, reject) => {
+              const reader = new FileReader();
+              reader.onloadend = () => resolve(reader.result);
+              reader.onerror = reject;
+              reader.readAsDataURL(file);
+            });
+          };
+          finalImageUrl = await readAsDataURL(newsForm.imageFile);
+        }
+      } else if (newsForm.imageType === 'url' && newsForm.imageUrl.trim()) {
+        finalImageUrl = newsForm.imageUrl.trim();
       }
 
       const articlePayload = {
         title: newsForm.title,
         excerpt: newsForm.excerpt,
-        content: newsForm.content,
+        content: newsForm.url.trim() ? `LINK:${newsForm.url.trim()}` : newsForm.content,
         tag: newsForm.tag,
         image: finalImageUrl
       };
 
-      await db.saveNews(articlePayload);
-      setSuccessMsg('News article published successfully!');
+      if (!selectedNewsId || selectedNewsId === 'new') {
+        const newArt = await db.saveNews(articlePayload);
+        setSuccessMsg('News article published successfully!');
+        setSelectedNewsId(newArt.id);
+      } else {
+        await db.updateNews(selectedNewsId, articlePayload);
+        setSuccessMsg('News article updated successfully!');
+      }
       
       // Reset Form
       setNewsForm({
@@ -425,11 +595,34 @@ const AdminDashboard = () => {
         tag: 'Match Report',
         imageType: 'url',
         imageFile: null,
-        imageUrl: ''
+        imageUrl: '',
+        url: ''
       });
+      setSelectedNewsId('new');
       await loadData();
     } catch (err) {
       setErrorMsg(err.message || 'Failed to publish news article.');
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  // Delete News Trigger
+  const handleNewsDelete = async () => {
+    if (!selectedNewsId || selectedNewsId === 'new') return;
+    if (!window.confirm("ARE YOU SURE you want to permanently delete this news article? This cannot be undone.")) return;
+
+    setActionLoading(true);
+    setSuccessMsg('');
+    setErrorMsg('');
+
+    try {
+      await db.deleteNews(selectedNewsId);
+      setSuccessMsg('News article deleted successfully!');
+      setSelectedNewsId('new');
+      await loadData();
+    } catch (err) {
+      setErrorMsg(err.message || 'Failed to delete news article.');
     } finally {
       setActionLoading(false);
     }
@@ -485,7 +678,14 @@ const AdminDashboard = () => {
               onClick={() => { setActiveTab('players'); setSuccessMsg(''); setErrorMsg(''); }}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-black uppercase tracking-wider transition-all ${activeTab === 'players' ? 'bg-[#2563EB] text-white' : 'text-white/60 hover:bg-white/5 hover:text-white'}`}
             >
-              <User size={16} /> Players Console
+              <User size={16} /> Tournament Stats
+            </button>
+
+            <button 
+              onClick={() => { setActiveTab('squads'); setSuccessMsg(''); setErrorMsg(''); }}
+              className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-xs font-black uppercase tracking-wider transition-all ${activeTab === 'squads' ? 'bg-[#2563EB] text-white' : 'text-white/60 hover:bg-white/5 hover:text-white'}`}
+            >
+              <UserCog size={16} /> Squad Management
             </button>
 
             <button 
@@ -959,120 +1159,189 @@ const AdminDashboard = () => {
 
             {/* News Panel */}
             {activeTab === 'news' && (
-              <div className="space-y-8 max-w-4xl mx-auto">
+              <div className="space-y-8">
                 <div className="border-b border-white/[0.08] pb-4">
                   <h2 className="text-2xl font-black uppercase tracking-tight">News Publisher</h2>
-                  <p className="text-xs text-white/40 mt-1">Publish leagues articles, media announcements, and match reports.</p>
+                  <p className="text-xs text-white/40 mt-1">Publish, edit, and manage league articles, media announcements, and match reports.</p>
                 </div>
 
-                <form onSubmit={handleNewsSubmit} className="bg-[#0c0c10] border border-white/[0.08] rounded-2xl p-6 space-y-6">
-                  <div>
-                    <label className="block text-[10px] font-black uppercase tracking-widest text-white/40 mb-2">Article Title</label>
-                    <input 
-                      type="text" 
-                      value={newsForm.title}
-                      onChange={(e) => setNewsForm({ ...newsForm, title: e.target.value })}
-                      placeholder="e.g. Punjab Fighters secure a final spot!"
-                      required
-                      className="w-full bg-[#141418] border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500"
-                    />
-                  </div>
-
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                      <label className="block text-[10px] font-black uppercase tracking-widest text-white/40 mb-2">Tag Category</label>
-                      <select 
-                        value={newsForm.tag}
-                        onChange={(e) => setNewsForm({ ...newsForm, tag: e.target.value })}
-                        className="w-full bg-[#141418] border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500"
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                  {/* Left Column: Select Article to Edit */}
+                  <div className="lg:col-span-1 space-y-4">
+                    <div className="flex items-center justify-between">
+                      <label className="block text-[10px] font-black uppercase tracking-widest text-white/40">Select Article to Edit</label>
+                      <button
+                        type="button"
+                        onClick={() => setSelectedNewsId('new')}
+                        className="px-2.5 py-1 rounded bg-[#2563EB] hover:bg-[#2563EB]/80 text-white font-extrabold text-[9px] uppercase tracking-wider flex items-center gap-1 transition-colors"
                       >
-                        <option>Match Report</option>
-                        <option>Highlight</option>
-                        <option>Press Release</option>
-                        <option>Interview</option>
-                      </select>
+                        <PlusCircle size={10} /> Add Article
+                      </button>
                     </div>
+                    <div className="space-y-2 max-h-[500px] overflow-y-auto pr-2">
+                      {news.map(n => (
+                        <div 
+                          key={n.id}
+                          onClick={() => setSelectedNewsId(n.id)}
+                          className={`p-3 rounded-xl border text-left cursor-pointer transition-all ${String(selectedNewsId) === String(n.id) ? 'bg-blue-600/10 border-blue-500' : 'bg-[#111116] border-white/[0.06] hover:border-white/10'}`}
+                        >
+                          <span className="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded bg-white/10 text-white/70">
+                            {n.tag}
+                          </span>
+                          <h4 className="font-extrabold text-xs uppercase mt-2 text-white line-clamp-2">
+                            {n.title}
+                          </h4>
+                          <p className="text-[9px] text-white/40 mt-1">
+                            {new Date(n.date).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}
+                            {n.url && n.url !== '#' && ' • 🔗 Link'}
+                          </p>
+                        </div>
+                      ))}
+                      {news.length === 0 && (
+                        <div className="text-center py-6 text-white/30 text-xs font-bold uppercase tracking-wider">
+                          No articles published
+                        </div>
+                      )}
+                    </div>
+                  </div>
 
-                    <div>
-                      <label className="block text-[10px] font-black uppercase tracking-widest text-white/40 mb-2">Banner Image Input Mode</label>
-                      <div className="grid grid-cols-2 gap-2">
-                        <button 
-                          type="button" 
-                          onClick={() => setNewsForm({ ...newsForm, imageType: 'url' })}
-                          className={`py-2 px-3 rounded-lg text-xs font-bold uppercase transition-all ${newsForm.imageType === 'url' ? 'bg-blue-600 text-white' : 'bg-[#141418] text-white/40 hover:text-white'}`}
-                        >
-                          Image URL
-                        </button>
-                        <button 
-                          type="button" 
-                          disabled={!hasSupabase}
-                          onClick={() => setNewsForm({ ...newsForm, imageType: 'upload' })}
-                          className={`py-2 px-3 rounded-lg text-xs font-bold uppercase transition-all ${newsForm.imageType === 'upload' ? 'bg-blue-600 text-white' : 'bg-[#141418] text-white/40 hover:text-white disabled:opacity-40'}`}
-                          title={!hasSupabase ? "Supabase Storage requires database connection" : ""}
-                        >
-                          File Upload
-                        </button>
+                  {/* Right Column: Form Console details */}
+                  <div className="lg:col-span-2 bg-[#0c0c10] border border-white/[0.08] rounded-2xl p-6">
+                    <form onSubmit={handleNewsSubmit} className="space-y-6">
+                      <div className="flex items-center justify-between border-b border-white/5 pb-2">
+                        <h3 className="text-sm font-black uppercase tracking-widest text-white/70">
+                          {selectedNewsId === 'new' || !selectedNewsId ? 'Publish New Article' : 'Edit News Article'}
+                        </h3>
+                        {selectedNewsId && selectedNewsId !== 'new' && (
+                          <button
+                            type="button"
+                            onClick={handleNewsDelete}
+                            disabled={actionLoading}
+                            className="px-2.5 py-1 rounded bg-rose-600/10 hover:bg-rose-600 border border-rose-500/20 hover:border-rose-500 text-rose-400 hover:text-white font-extrabold text-[9px] uppercase tracking-wider flex items-center gap-1 transition-all disabled:opacity-50"
+                          >
+                            <Trash2 size={10} /> Delete Article
+                          </button>
+                        )}
                       </div>
-                    </div>
+
+                      <div>
+                        <label className="block text-[10px] font-black uppercase tracking-widest text-white/40 mb-2">Article Title</label>
+                        <input 
+                          type="text" 
+                          value={newsForm.title}
+                          onChange={(e) => setNewsForm({ ...newsForm, title: e.target.value })}
+                          placeholder="e.g. Punjab Fighters secure a final spot!"
+                          required
+                          className="w-full bg-[#141418] border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500"
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block text-[10px] font-black uppercase tracking-widest text-white/40 mb-2">Tag Category</label>
+                          <select 
+                            value={newsForm.tag}
+                            onChange={(e) => setNewsForm({ ...newsForm, tag: e.target.value })}
+                            className="w-full bg-[#141418] border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500"
+                          >
+                            <option>Match Report</option>
+                            <option>Highlight</option>
+                            <option>Press Release</option>
+                            <option>Interview</option>
+                          </select>
+                        </div>
+
+                        <div>
+                          <label className="block text-[10px] font-black uppercase tracking-widest text-white/40 mb-2">Banner Image Input Mode</label>
+                          <div className="grid grid-cols-2 gap-2">
+                            <button 
+                              type="button" 
+                              onClick={() => setNewsForm({ ...newsForm, imageType: 'url' })}
+                              className={`py-2 px-3 rounded-lg text-xs font-bold uppercase transition-all ${newsForm.imageType === 'url' ? 'bg-blue-600 text-white' : 'bg-[#141418] text-white/40 hover:text-white'}`}
+                            >
+                              Image URL
+                            </button>
+                            <button 
+                              type="button" 
+                              onClick={() => setNewsForm({ ...newsForm, imageType: 'upload' })}
+                              className={`py-2 px-3 rounded-lg text-xs font-bold uppercase transition-all ${newsForm.imageType === 'upload' ? 'bg-blue-600 text-white' : 'bg-[#141418] text-white/40 hover:text-white'}`}
+                            >
+                              File Upload
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+
+                      {newsForm.imageType === 'url' ? (
+                        <div>
+                          <label className="block text-[10px] font-black uppercase tracking-widest text-white/40 mb-2">Banner Image URL</label>
+                          <input 
+                            type="url" 
+                            value={newsForm.imageUrl}
+                            onChange={(e) => setNewsForm({ ...newsForm, imageUrl: e.target.value })}
+                            placeholder="https://images.unsplash.com/photo-..."
+                            required={newsForm.imageType === 'url' && (selectedNewsId === 'new' || !selectedNewsId)}
+                            className="w-full bg-[#141418] border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500"
+                          />
+                        </div>
+                      ) : (
+                        <div>
+                          <label className="block text-[10px] font-black uppercase tracking-widest text-white/40 mb-2">Upload Banner File</label>
+                          <input 
+                            type="file" 
+                            accept="image/*"
+                            onChange={(e) => setNewsForm({ ...newsForm, imageFile: e.target.files[0] })}
+                            required={newsForm.imageType === 'upload' && (selectedNewsId === 'new' || !selectedNewsId)}
+                            className="w-full bg-[#141418] border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none"
+                          />
+                        </div>
+                      )}
+
+                      <div>
+                        <label className="block text-[10px] font-black uppercase tracking-widest text-white/40 mb-2">Short Excerpt (Grid Summary Card)</label>
+                        <input 
+                          type="text" 
+                          value={newsForm.excerpt}
+                          onChange={(e) => setNewsForm({ ...newsForm, excerpt: e.target.value })}
+                          placeholder="Brief one-sentence preview..."
+                          required
+                          className="w-full bg-[#141418] border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-[10px] font-black uppercase tracking-widest text-white/40 mb-2">Full Story / External Link URL (Optional)</label>
+                        <input 
+                          type="url" 
+                          value={newsForm.url}
+                          onChange={(e) => setNewsForm({ ...newsForm, url: e.target.value })}
+                          placeholder="https://example.com/article (redirects 'View Full Story' button)"
+                          className="w-full bg-[#141418] border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-[10px] font-black uppercase tracking-widest text-white/40 mb-2">Detailed Content (Full Story)</label>
+                        <textarea 
+                          rows="6"
+                          value={newsForm.content}
+                          onChange={(e) => setNewsForm({ ...newsForm, content: e.target.value })}
+                          placeholder="Write full story content here (not required if External Link URL is provided)..."
+                          required={!newsForm.url.trim()}
+                          className="w-full bg-[#141418] border border-white/10 rounded-xl p-4 text-sm text-white focus:outline-none focus:border-blue-500"
+                        />
+                      </div>
+
+                      <button 
+                        type="submit"
+                        disabled={actionLoading}
+                        className="w-full py-4 rounded-xl bg-blue-600 hover:bg-blue-500 font-extrabold text-xs uppercase tracking-widest flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
+                      >
+                        <PlusCircle size={14} /> {actionLoading ? 'Saving...' : selectedNewsId === 'new' || !selectedNewsId ? 'Publish Article' : 'Save News Updates'}
+                      </button>
+                    </form>
                   </div>
-
-                  {newsForm.imageType === 'url' ? (
-                    <div>
-                      <label className="block text-[10px] font-black uppercase tracking-widest text-white/40 mb-2">Banner Image URL</label>
-                      <input 
-                        type="url" 
-                        value={newsForm.imageUrl}
-                        onChange={(e) => setNewsForm({ ...newsForm, imageUrl: e.target.value })}
-                        placeholder="https://images.unsplash.com/photo-..."
-                        required
-                        className="w-full bg-[#141418] border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500"
-                      />
-                    </div>
-                  ) : (
-                    <div>
-                      <label className="block text-[10px] font-black uppercase tracking-widest text-white/40 mb-2">Upload Banner File</label>
-                      <input 
-                        type="file" 
-                        accept="image/*"
-                        onChange={(e) => setNewsForm({ ...newsForm, imageFile: e.target.files[0] })}
-                        required
-                        className="w-full bg-[#141418] border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none"
-                      />
-                    </div>
-                  )}
-
-                  <div>
-                    <label className="block text-[10px] font-black uppercase tracking-widest text-white/40 mb-2">Short Excerpt (Grid Summary Card)</label>
-                    <input 
-                      type="text" 
-                      value={newsForm.excerpt}
-                      onChange={(e) => setNewsForm({ ...newsForm, excerpt: e.target.value })}
-                      placeholder="Brief one-sentence preview..."
-                      required
-                      className="w-full bg-[#141418] border border-white/10 rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-blue-500"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-[10px] font-black uppercase tracking-widest text-white/40 mb-2">Detailed Content (Full Story)</label>
-                    <textarea 
-                      rows="6"
-                      value={newsForm.content}
-                      onChange={(e) => setNewsForm({ ...newsForm, content: e.target.value })}
-                      placeholder="Write full story content here..."
-                      required
-                      className="w-full bg-[#141418] border border-white/10 rounded-xl p-4 text-sm text-white focus:outline-none focus:border-blue-500"
-                    />
-                  </div>
-
-                  <button 
-                    type="submit"
-                    disabled={actionLoading}
-                    className="w-full py-4 rounded-xl bg-blue-600 hover:bg-blue-500 font-extrabold text-xs uppercase tracking-widest flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
-                  >
-                    <PlusCircle size={14} /> {actionLoading ? 'Publishing...' : 'Publish Article'}
-                  </button>
-                </form>
+                </div>
               </div>
             )}
 
@@ -1156,12 +1425,12 @@ const AdminDashboard = () => {
               </div>
             )}
 
-            {/* Players Panel */}
+            {/* Tournament Stats Panel */}
             {activeTab === 'players' && (
               <div className="space-y-8">
                 <div className="border-b border-white/[0.08] pb-4">
-                  <h2 className="text-2xl font-black uppercase tracking-tight">Players Console</h2>
-                  <p className="text-xs text-white/40 mt-1">Modify player details, team allocations, and comprehensive statistics.</p>
+                  <h2 className="text-2xl font-black uppercase tracking-tight">Tournament Stats</h2>
+                  <p className="text-xs text-white/40 mt-1">Modify player runs, wickets, and performance figures by sorting through leaderboards.</p>
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -1444,6 +1713,178 @@ const AdminDashboard = () => {
                           className="w-full py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 font-extrabold text-xs uppercase tracking-widest flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
                         >
                           <Save size={14} /> {actionLoading ? 'Saving changes...' : 'Save Player Updates'}
+                        </button>
+                      </form>
+                    )}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Squad Management Panel */}
+            {activeTab === 'squads' && (
+              <div className="space-y-8">
+                <div className="border-b border-white/[0.08] pb-4">
+                  <h2 className="text-2xl font-black uppercase tracking-tight">Squad Management</h2>
+                  <p className="text-xs text-white/40 mt-1">Register new players, assign jersey numbers, or remove players from team rosters.</p>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                  {/* Left Column: Team Dropdown & Player List */}
+                  <div className="lg:col-span-1 space-y-4">
+                    <div>
+                      <label className="block text-[10px] font-black uppercase tracking-widest text-white/40 mb-2">Select Team</label>
+                      <select 
+                        value={squadSelectedTeamId}
+                        onChange={(e) => {
+                          setSquadSelectedTeamId(e.target.value);
+                          setSquadSelectedPlayerId('');
+                        }}
+                        className="w-full bg-[#111116] border border-white/[0.08] rounded-xl px-4 py-3 text-xs text-white focus:outline-none focus:border-blue-500 font-bold uppercase"
+                      >
+                        <option value="">Choose a Team</option>
+                        {teams.map(t => (
+                          <option key={t.id} value={t.id}>{t.name}</option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {squadSelectedTeamId && (
+                      <div className="flex items-center justify-between border-t border-white/5 pt-4">
+                        <span className="text-[10px] font-black uppercase tracking-widest text-white/40">Roster Players</span>
+                        <button
+                          type="button"
+                          onClick={() => setSquadSelectedPlayerId('new')}
+                          className="px-2.5 py-1 rounded bg-[#2563EB] hover:bg-[#2563EB]/80 text-white font-extrabold text-[9px] uppercase tracking-wider flex items-center gap-1 transition-colors"
+                        >
+                          <PlusCircle size={10} /> Add Player
+                        </button>
+                      </div>
+                    )}
+
+                    {squadSelectedTeamId && (
+                      <div className="space-y-2 max-h-[400px] overflow-y-auto pr-2">
+                        {players
+                          .filter(p => String(p.team_id) === String(squadSelectedTeamId))
+                          .map(p => (
+                            <div 
+                              key={p.id}
+                              onClick={() => setSquadSelectedPlayerId(p.id)}
+                              className={`p-3 rounded-xl border text-left cursor-pointer transition-all ${String(squadSelectedPlayerId) === String(p.id) ? 'bg-blue-600/10 border-blue-500' : 'bg-[#111116] border-white/[0.06] hover:border-white/10'}`}
+                            >
+                              <h4 className="font-extrabold text-xs uppercase text-white">{p.name}</h4>
+                              <p className="text-[10px] text-white/40 mt-1">{p.role || 'All-Rounder'} • #{p.jersey || 'N/A'}</p>
+                            </div>
+                          ))}
+                        {players.filter(p => String(p.team_id) === String(squadSelectedTeamId)).length === 0 && (
+                          <div className="text-center py-8 text-white/30 text-xs font-bold uppercase tracking-wider">
+                            No squad members registered for this team
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Right Column: Squad Player Form */}
+                  <div className="lg:col-span-2 bg-[#0c0c10] border border-white/[0.08] rounded-2xl p-6">
+                    {!squadSelectedPlayerId ? (
+                      <div className="py-32 text-center text-white/30 text-xs font-bold uppercase tracking-widest">
+                        {squadSelectedTeamId 
+                          ? 'Select a player from the roster or click "+ Add Player" to create one' 
+                          : 'Select a team from the left dropdown to manage rosters.'}
+                      </div>
+                    ) : (
+                      <form onSubmit={handleSquadPlayerSubmit} className="space-y-6">
+                        <div className="flex items-center justify-between border-b border-white/5 pb-2">
+                          <h3 className="text-sm font-black uppercase tracking-widest text-white/70">
+                            {squadSelectedPlayerId === 'new' ? 'Add Player to Squad' : 'Edit Player Profile'}
+                          </h3>
+                          {squadSelectedPlayerId !== 'new' && (
+                            <button
+                              type="button"
+                              onClick={handleSquadPlayerDelete}
+                              disabled={actionLoading}
+                              className="px-2.5 py-1 rounded border border-rose-500/30 bg-rose-600/10 hover:bg-rose-600 text-rose-400 hover:text-white font-extrabold text-[9px] uppercase tracking-wider flex items-center gap-1.5 transition-colors disabled:opacity-50"
+                            >
+                              <UserX size={10} /> Delete Player
+                            </button>
+                          )}
+                        </div>
+
+                        {/* General Fields */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-[10px] font-black uppercase tracking-widest text-white/40 mb-2">Full Name</label>
+                            <input 
+                              type="text" 
+                              value={squadPlayerForm.name}
+                              onChange={(e) => setSquadPlayerForm({ ...squadPlayerForm, name: e.target.value })}
+                              required
+                              className="w-full bg-[#141418] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-blue-500"
+                            />
+                          </div>
+
+                          <div>
+                            <label className="block text-[10px] font-black uppercase tracking-widest text-white/40 mb-2">Team Assignment</label>
+                            <select 
+                              value={squadPlayerForm.team_id}
+                              onChange={(e) => setSquadPlayerForm({ ...squadPlayerForm, team_id: e.target.value })}
+                              required
+                              className="w-full bg-[#141418] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-blue-500"
+                            >
+                              <option value="">No Team</option>
+                              {teams.map(t => (
+                                <option key={t.id} value={t.id}>{t.name}</option>
+                              ))}
+                            </select>
+                          </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-[10px] font-black uppercase tracking-widest text-white/40 mb-2">Role</label>
+                            <select 
+                              value={squadPlayerForm.role}
+                              onChange={(e) => setSquadPlayerForm({ ...squadPlayerForm, role: e.target.value })}
+                              required
+                              className="w-full bg-[#141418] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-blue-500"
+                            >
+                              <option>Batter</option>
+                              <option>Bowler</option>
+                              <option>All-Rounder</option>
+                              <option>Wicketkeeper</option>
+                            </select>
+                          </div>
+
+                          <div>
+                            <label className="block text-[10px] font-black uppercase tracking-widest text-white/40 mb-2">Jersey Number</label>
+                            <input 
+                              type="number" 
+                              value={squadPlayerForm.jersey}
+                              onChange={(e) => setSquadPlayerForm({ ...squadPlayerForm, jersey: e.target.value })}
+                              placeholder="e.g. 18"
+                              className="w-full bg-[#141418] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-blue-500"
+                            />
+                          </div>
+                        </div>
+
+                        <div>
+                          <label className="block text-[10px] font-black uppercase tracking-widest text-white/40 mb-2">Photo URL / Path</label>
+                          <input 
+                            type="text" 
+                            value={squadPlayerForm.photo}
+                            onChange={(e) => setSquadPlayerForm({ ...squadPlayerForm, photo: e.target.value })}
+                            placeholder="/players/photo-name.jpg"
+                            className="w-full bg-[#141418] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white focus:outline-none focus:border-blue-500"
+                          />
+                        </div>
+
+                        <button 
+                          type="submit"
+                          disabled={actionLoading}
+                          className="w-full py-3.5 rounded-xl bg-blue-600 hover:bg-blue-500 font-extrabold text-xs uppercase tracking-widest flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
+                        >
+                          <Save size={14} /> {actionLoading ? 'Saving roster changes...' : squadSelectedPlayerId === 'new' ? 'Add Player to Squad' : 'Save Squad Updates'}
                         </button>
                       </form>
                     )}
